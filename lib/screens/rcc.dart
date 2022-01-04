@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 import '../formatters/NumericalRangeFormatter.dart';
+import 'package:qt_python_tools/widgets/save_group_widget.dart';
 
 
 class RccPage extends StatefulWidget {
@@ -11,13 +12,16 @@ class RccPage extends StatefulWidget {
 }
 
 class _RccPageState extends State<RccPage> {
+  // default fields
+  var _inputPathController = TextEditingController();
+  var _outputPathController = TextEditingController();
+  var _projectNameController = TextEditingController();
+  var _itemNameController = TextEditingController();
+  // rcc option fields
   TextEditingController _thresholdController = TextEditingController(text: '70');
   TextEditingController _compressionController = TextEditingController(text: '-1');
   bool _useCompressionOptions = false;
   bool optionNoCompress = false;
-
-  //int? optionThresholdLevel = null;
-  //int? optionCompressionLevel = null;
 
   /// need Enable and Disable all the compression options
   void checkBoxUseCompression(bool? newValue) {
@@ -29,18 +33,24 @@ class _RccPageState extends State<RccPage> {
     return ScaffoldPage(
         header: const PageHeader(title: Text('Rcc')),
         content: Padding(
-            padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
-            child:Wrap( // use wrap instead of Column to use spacing
+          padding: const EdgeInsets.fromLTRB(14, 8, 6, 8),
+          child:SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 12, 0), // prevent scroller overlap
+              child:Wrap( // use wrap instead of Column to use spacing
                 spacing: 20,     // the horizontal spacing
                 runSpacing: 20,  // the vertical spacing
                 children: [
-                  const TextBox(
+                  TextBox(
                     header: '.qrc file input path',
                     placeholder: 'C:/...',
+                    controller: _inputPathController,
                   ),
-                  const TextBox(
+                  TextBox(
                     header: '.py file output path',
                     placeholder: 'C:/...',
+                    controller: _outputPathController,
                   ),
                   SizedBox(
                     width: 440,
@@ -111,29 +121,15 @@ class _RccPageState extends State<RccPage> {
                         )
                     ),
                   ),
-                SizedBox(
-                  width: 600,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Button(
-                        child: const Text('Create Resources'),
-                        onPressed: checkAndRunCommandRcc),
-                      const SizedBox(width: 30),
-                      const InfoLabel(label: 'Save as:'),
-                      SizedBox(
-                          width: 200,
-                          child: TextBox()),
-                      Button(
-                          child: const Text('Create and Save'),
-                          onPressed: saveCommandRcc),
-                    ],
-                  ),
-                ),
+                  SaveGroupWidget(
+                      saveItemName: 'RCC',
+                      projectNameController: _projectNameController,
+                      itemNameController: _itemNameController,
+                      createRunFunction: checkAndRunCommandRcc,
+                      createRunSaveFunction: saveCommandRcc),
                 ]
-            )
-        )
+              )
+        )))
     );
   }
 
@@ -147,7 +143,11 @@ class _RccPageState extends State<RccPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    _inputPathController.dispose();
+    _outputPathController.dispose();
+    _projectNameController.dispose();
+    _itemNameController.dispose();
+
     _thresholdController.dispose();
     _compressionController.dispose();
     super.dispose();
