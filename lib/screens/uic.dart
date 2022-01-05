@@ -23,7 +23,7 @@ class _UicPageState extends State<UicPage> {
     return ScaffoldPage(
         header: const PageHeader(title: Text('Uic')),
         content: Padding(
-          padding: const EdgeInsets.fromLTRB(14, 8, 6, 8),
+          padding: const EdgeInsets.fromLTRB(14, 0, 6, 0),
             child:SingleChildScrollView(
             scrollDirection: Axis.vertical,
               child: Padding(
@@ -55,7 +55,7 @@ class _UicPageState extends State<UicPage> {
                                   Checkbox(
                                       checked: _optionUicXpyqt,
                                       onChanged: checkBoxUseX,
-                                      content: const Text('-x: Run Ui from file')),
+                                      content: const Text('Add code to run Ui from file (-x)')),
                                   const SizedBox(height: 12),  // Spacing between items
                                   SizedBox(
                                       width: 200,

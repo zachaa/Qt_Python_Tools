@@ -37,7 +37,7 @@ class SaveGroupWidget extends StatelessWidget {
                   children: [
                     const InfoLabel(label: 'Save as:'),
                     SizedBox(
-                        width: 200,
+                        width: 150,
                         child: TextBox(
                           header: 'Project Name',
                           controller: projectNameController,

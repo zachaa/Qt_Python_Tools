@@ -45,7 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: Text('Settings')
         ),
         content: Padding(
-            padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
+            padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
             child:Wrap( // use wrap instead of Column to use spacing
                 spacing: 20,     // the horizontal spacing
                 runSpacing: 20,  // the vertical spacing
