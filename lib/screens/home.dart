@@ -5,7 +5,6 @@ import '/theme.dart';
 import '/command_db.dart';
 import '/commands_model.dart';
 
-
 /// This should come from some external source
 List<QtCommand> getQtCommands() {
   return <QtCommand>[
@@ -17,7 +16,9 @@ List<QtCommand> getQtCommands() {
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.ui",
         pathOutput:
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdExtraArgs: "-x"),
+        cmdOptions: "-x",
+        cmdPyQtOptions: "",
+        cmdPySideOptions: ""),
     const QtCommand(
         id: 2,
         projectName: "Amtz2",
@@ -26,7 +27,9 @@ List<QtCommand> getQtCommands() {
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\data_table_widget.ui",
         pathOutput:
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdExtraArgs: "-x"),
+        cmdOptions: "-x",
+        cmdPyQtOptions: "",
+        cmdPySideOptions: ""),
     const QtCommand(
         id: 3,
         projectName: "Amtz2",
@@ -35,7 +38,9 @@ List<QtCommand> getQtCommands() {
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\data_table_widget.ui",
         pathOutput:
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdExtraArgs: "-x"),
+        cmdOptions: "-x",
+        cmdPyQtOptions: "",
+        cmdPySideOptions: ""),
     const QtCommand(
         id: 4,
         projectName: "Amtz2",
@@ -44,7 +49,9 @@ List<QtCommand> getQtCommands() {
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\data_table_widget.ui",
         pathOutput:
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdExtraArgs: "-x"),
+        cmdOptions: "-x",
+        cmdPyQtOptions: "",
+        cmdPySideOptions: ""),
     const QtCommand(
         id: 5,
         projectName: "Amtz2",
@@ -53,7 +60,9 @@ List<QtCommand> getQtCommands() {
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\data_table_widget.ui",
         pathOutput:
             r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdExtraArgs: "-x"),
+        cmdOptions: "-x",
+        cmdPyQtOptions: "",
+        cmdPySideOptions: ""),
   ];
 }
 
@@ -61,14 +70,20 @@ class QtCommandDataSource extends sf.DataGridSource {
   QtCommandDataSource({required List<QtCommand> commands}) {
     _commands = commands
         .map<sf.DataGridRow>((e) => sf.DataGridRow(cells: [
-              sf.DataGridCell<String>(columnName: 'project_name', value: e.projectName),
-              sf.DataGridCell<String>(columnName: 'item_name', value: e.itemName),
               sf.DataGridCell<String>(
-                  columnName: 'extra_args', value: e.cmdExtraArgs),
+                  columnName: 'project_name', value: e.projectName),
+              sf.DataGridCell<String>(
+                  columnName: 'item_name', value: e.itemName),
+              sf.DataGridCell<String>(
+                  columnName: 'cmdOptions', value: e.cmdOptions),
+              sf.DataGridCell<String>(
+                  columnName: 'cmdPyQtOptions', value: e.cmdPyQtOptions),
+              sf.DataGridCell<String>(
+                  columnName: 'cmdPySideOptions', value: e.cmdPySideOptions),
               sf.DataGridCell<String>(
                   columnName: 'input_path', value: e.pathInput),
-            ])
-        ).toList();
+            ]))
+        .toList();
   }
 
   List<sf.DataGridRow> _commands = [];
@@ -84,7 +99,8 @@ class QtCommandDataSource extends sf.DataGridSource {
       // Give different widgets for different columns
       switch (dataGridCell.columnName) {
         case 'project_name':
-        case 'item_name': {
+        case 'item_name':
+          {
             c = Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
@@ -94,12 +110,14 @@ class QtCommandDataSource extends sf.DataGridSource {
                   maxLines: 1,
                   softWrap: false,
                   style: const TextStyle(
-                      fontSize: 12,
-                      color: QtToolThemeColors.tableTextColor),
+                      fontSize: 12, color: QtToolThemeColors.tableTextColor),
                 ));
           }
           break;
-        case 'extra_args': {
+        case 'cmdOptions':
+        case 'cmdPyQtOptions':
+        case 'cmdPySideOptions':
+          {
             c = Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
@@ -109,12 +127,12 @@ class QtCommandDataSource extends sf.DataGridSource {
                   maxLines: 1,
                   softWrap: false,
                   style: const TextStyle(
-                      fontSize: 12,
-                      color: QtToolThemeColors.tableTextColor),
+                      fontSize: 12, color: QtToolThemeColors.tableTextColor),
                 ));
           }
           break;
-        case 'input_path': {
+        case 'input_path':
+          {
             c = Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
@@ -126,19 +144,18 @@ class QtCommandDataSource extends sf.DataGridSource {
                   maxLines: 1,
                   softWrap: false,
                   style: const TextStyle(
-                      fontSize: 12,
-                      color: QtToolThemeColors.tableTextColor),
+                      fontSize: 12, color: QtToolThemeColors.tableTextColor),
                 ));
           }
           break;
-        default: {
+        default:
+          {
             c = Container(
                 padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
                 child: Text(
                   dataGridCell.value.toString(),
                   style: const TextStyle(
-                      fontSize: 12,
-                      color: QtToolThemeColors.tableTextColor),
+                      fontSize: 12, color: QtToolThemeColors.tableTextColor),
                 ));
           }
           break;
@@ -156,7 +173,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<QtCommand> uicCommands = <QtCommand>[];
+  late List<QtCommand> uicCommands = <QtCommand>[];
   late QtCommandDataSource _uicCommandsDataSource;
   late Map<String, double> uicColumnWidths = {
     // for user column resizing
@@ -164,10 +181,12 @@ class _HomePageState extends State<HomePage> {
     'item_name': double.nan,
     'input_path': double.nan,
     'output_path': double.nan,
-    'extra_args': double.nan,
+    'cmdOptions': double.nan,
+    'cmdPyQtOptions': double.nan,
+    'cmdPySideOptions': double.nan,
   };
 
-  List<QtCommand> rccCommands = <QtCommand>[];
+  late List<QtCommand> rccCommands = <QtCommand>[];
   late QtCommandDataSource _rccCommandsDataSource;
   late Map<String, double> rccColumnWidths = {
     // for user column resizing
@@ -175,24 +194,32 @@ class _HomePageState extends State<HomePage> {
     'item_name': double.nan,
     'input_path': double.nan,
     'output_path': double.nan,
-    'extra_args': double.nan,
+    'cmdOptions': double.nan,
+    'cmdPyQtOptions': double.nan,
+    'cmdPySideOptions': double.nan,
   };
 
   @override
   void initState() {
-    uicCommands = getQtCommands();
-    _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
+    // uicCommands = getQtCommands();
+    // _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
     rccCommands = getQtCommands();
     _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
     super.initState();
-    // refreshTables();
+    refreshTables();
   }
 
-  // Future refreshTables() async {
-  //   this.uicCommands = QtCommandDatabase.instance.readAllCommands(tableUic)
-  //   _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
-  //   rccCommands = getQtCommands();
-  //   _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
+  Future refreshTables() async {
+    uicCommands = await QtCommandDatabase.instance.readAllCommands(tableUic);
+    _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
+    // rccCommands = await QtCommandDatabase.instance.readAllCommands(tableRcc);
+    // _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
+  }
+
+  // @override
+  // void dispose() {
+  //   QtCommandDatabase.instance.close();
+  //   super.dispose();
   // }
 
   @override
@@ -200,127 +227,136 @@ class _HomePageState extends State<HomePage> {
     return ScaffoldPage(
         header: const PageHeader(title: Text('Home')),
         content: Padding(
-            padding: const EdgeInsets.fromLTRB(14, 8, 6, 8),
+            padding: const EdgeInsets.fromLTRB(14, 0, 6, 0),
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 12, 0), // prevent scroller overlap
-                  child:Column(
-                    //mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ConstrainedBox(
-                          constraints: const BoxConstraints(minHeight: 80, maxHeight: 140),
-                          child: giveSfCommandDataTable(
-                              _uicCommandsDataSource,
-                              uicColumnWidths,
-                              QtToolThemeColors.uicColor)),
-                      Button(child: const Text('Run Uic'), onPressed: runExistingUic),
-                      const SizedBox(height: 10),
-                      ConstrainedBox(
-                          constraints: const BoxConstraints(minHeight: 80, maxHeight: 140),
-                          child:giveSfCommandDataTable(
-                              _rccCommandsDataSource,
-                              rccColumnWidths,
-                              QtToolThemeColors.rccColor)),
-                      Button(child: const Text('Run Rcc'), onPressed: runExistingRcc),
-                      const SizedBox(height: 10),
-                    ]
-                  )
-                )
-            )
+                child: Padding(  // prevent scroller overlap
+                    padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          uicCommands.isEmpty
+                              ? const Center(
+                                  child: Text('No Uic Commands',
+                                      style: TextStyle(fontSize: 20)))
+                              : ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                      minHeight: 80, maxHeight: 140),
+                                  child: giveSfCommandDataTable(
+                                      _uicCommandsDataSource,
+                                      uicColumnWidths,
+                                      QtToolThemeColors.uicColor)),
+                          Button(
+                              child: const Text('Run Uic'),
+                              onPressed: runExistingUic),
+                          const SizedBox(height: 10),
+                          // TODO re-enable later with database
+                          ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                  minHeight: 80, maxHeight: 140),
+                              child: giveSfCommandDataTable(
+                                  _rccCommandsDataSource,
+                                  rccColumnWidths,
+                                  QtToolThemeColors.rccColor)),
+                          Button(
+                              child: const Text('Run Rcc'),
+                              onPressed: runExistingRcc),
+                          const SizedBox(height: 10),
+                        ],
+                    ),
+                )),
         ));
   }
 
   /// Gives a DataTable displaying the data from the given dataSource
   SingleChildScrollView giveSfCommandDataTable(sf.DataGridSource dataSource,
-                                               Map<String, double> columnWidthsMap,
-                                               Color primaryColor) {
+      Map<String, double> columnWidthsMap, Color primaryColor) {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),  // so scroller does not overlap
-          child: sf.SfDataGridTheme(
-            data: sf.SfDataGridThemeData(
-              headerColor: primaryColor,
-              rowHoverColor: primaryColor.withOpacity(0.4),
-              selectionColor: primaryColor.withOpacity(0.8),
-              rowHoverTextStyle: const TextStyle(fontSize: 12),
-              gridLineColor: QtToolThemeColors.tableGridLineColor,
-            ),
-            child: sf.SfDataGrid(
-              source: dataSource,
-              selectionMode: sf.SelectionMode.single,
-              navigationMode: sf.GridNavigationMode.row,
-              rowHeight: 20,
-              headerRowHeight: 22,
-              gridLinesVisibility: sf.GridLinesVisibility.vertical,
-              allowColumnsResizing: true,
-              onColumnResizeUpdate: (sf.ColumnResizeUpdateDetails details) {
-                setState(() {
-                  columnWidthsMap[details.column.columnName] = details.width;
-                });
-                return true;
-              },
-              columns: <sf.GridColumn>[
-                sf.GridColumn(
-                    columnName: 'project_name',
-                    width: columnWidthsMap['project_name']!,
-                    columnWidthMode: sf.ColumnWidthMode.fitByCellValue,
-                    minimumWidth: 50,
-                    maximumWidth: 90,
-                    label: Container(
-                      padding: const EdgeInsets.all(2.0),
-                      alignment: Alignment.center,
-                      child: const Text('Project',
-                          style: TextStyle(fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: QtToolThemeColors.tableTextColor)),
-                    )),
-                sf.GridColumn(
-                    columnName: 'item_name',
-                    width: columnWidthsMap['item_name']!,
-                    columnWidthMode: sf.ColumnWidthMode.fitByCellValue,
-                    minimumWidth: 80,
-                    maximumWidth: 180,
-                    label: Container(
-                        padding: const EdgeInsets.all(2.0),
-                        alignment: Alignment.center,
-                        child: const Text('Name',
-                            style: TextStyle(fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: QtToolThemeColors.tableTextColor)),
-                    )),
-                sf.GridColumn(
-                    columnName: 'extra_args',
-                    width: columnWidthsMap['extra_args']!,
-                    columnWidthMode: sf.ColumnWidthMode.fitByColumnName,
-                    minimumWidth: 70,
-                    maximumWidth: 150,
-                    label: Container(
-                        padding: const EdgeInsets.all(2.0),
-                        alignment: Alignment.center,
-                        child: const Text('Extra Args',
-                            style: TextStyle(fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: QtToolThemeColors.tableTextColor)),
-                    )),
-                sf.GridColumn(
-                    columnName: 'input_path',
-                    width: columnWidthsMap['input_path']!,
-                    columnWidthMode: sf.ColumnWidthMode.lastColumnFill,
-                    minimumWidth: 100,
-                    label: Container(
-                        padding: const EdgeInsets.all(2.0),
-                        alignment: Alignment.center,
-                        child: const Text('Input Path',
-                            style: TextStyle(fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: QtToolThemeColors.tableTextColor)),
-                    )),
-              ],
-            ))
+            padding: const EdgeInsets.fromLTRB(
+                0, 0, 10, 0), // so scroller does not overlap
+            child: sf.SfDataGridTheme(
+                data: sf.SfDataGridThemeData(
+                  headerColor: primaryColor,
+                  rowHoverColor: primaryColor.withOpacity(0.4),
+                  selectionColor: primaryColor.withOpacity(0.8),
+                  rowHoverTextStyle: const TextStyle(fontSize: 12),
+                  gridLineColor: QtToolThemeColors.tableGridLineColor,
+                ),
+                child: sf.SfDataGrid(
+                  source: dataSource,
+                  selectionMode: sf.SelectionMode.single,
+                  navigationMode: sf.GridNavigationMode.row,
+                  rowHeight: 20,
+                  headerRowHeight: 22,
+                  gridLinesVisibility: sf.GridLinesVisibility.vertical,
+                  allowColumnsResizing: true,
+                  onColumnResizeUpdate: (sf.ColumnResizeUpdateDetails details) {
+                    setState(() {
+                      columnWidthsMap[details.column.columnName] =
+                          details.width;
+                    });
+                    return true;
+                  },
+                  columns: <sf.GridColumn>[
+                    giveSfGridColumn('project_name', 'Project', columnWidthsMap,
+                        50, 90, sf.ColumnWidthMode.fitByCellValue),
+                    giveSfGridColumn('item_name', 'Name', columnWidthsMap, 80,
+                        180, sf.ColumnWidthMode.fitByCellValue),
+                    giveSfGridColumn('cmdOptions', 'Extra Opt', columnWidthsMap,
+                        50, 120, sf.ColumnWidthMode.fitByColumnName),
+                    giveSfGridColumn(
+                        'cmdPyQtOptions',
+                        'PyQt Opt',
+                        columnWidthsMap,
+                        50,
+                        120,
+                        sf.ColumnWidthMode.fitByColumnName),
+                    giveSfGridColumn(
+                        'cmdPySideOptions',
+                        'PySide Opt',
+                        columnWidthsMap,
+                        50,
+                        120,
+                        sf.ColumnWidthMode.fitByColumnName),
+                    giveSfGridColumn(
+                        'input_path',
+                        'Input Path',
+                        columnWidthsMap,
+                        100,
+                        double.nan,
+                        sf.ColumnWidthMode.lastColumnFill),
+                  ],
+                )),
         ));
+  }
+
+  /// Give the grid columns used in all the tables
+  sf.GridColumn giveSfGridColumn(
+      String colName,
+      String colTitle,
+      Map<String, double> columnWidthsMap,
+      double minWidth,
+      double maxWidth,
+      sf.ColumnWidthMode widthMode) {
+    return sf.GridColumn(
+      columnName: colName,
+      width: columnWidthsMap[colName]!,
+      autoFitPadding: const EdgeInsets.all(3),
+      columnWidthMode: widthMode,
+      minimumWidth: minWidth,
+      maximumWidth: maxWidth,
+      label: Container(
+        padding: const EdgeInsets.all(2.0),
+        alignment: Alignment.center,
+        child: Text(colTitle,
+            style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: QtToolThemeColors.tableTextColor)),
+      ),
+    );
   }
 
   void runExistingUic() {
