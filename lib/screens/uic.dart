@@ -70,11 +70,13 @@ class _UicPageState extends State<UicPage> {
                                       onChanged: checkBoxUseX,
                                       content: const Text('Add code to run Ui from file (-x)')),
                                   const SizedBox(height: 12),  // Spacing between items
-                                  SizedBox(
-                                      width: 200,
-                                      child: TextBox(
-                                        header: 'Resources extension',
-                                        controller: _resourceExtensionController,)),
+                                  Tooltip(
+                                      message: '(PyQt5 Only) Rcc Support was removed in PyQt6 because reasons.',
+                                      child:SizedBox(
+                                        width: 200,
+                                        child: TextBox(
+                                          header: 'Resources Extension Suffix',
+                                          controller: _resourceExtensionController,))),
                               ],
                             )
                         )
