@@ -12,10 +12,11 @@ class LUpdatePage extends StatefulWidget {
 
 class _LUpdatePageState extends State<LUpdatePage> {
   // default fields
-  var _inputPathController = TextEditingController();
-  var _outputPathController = TextEditingController();
-  var _projectNameController = TextEditingController();
-  var _itemNameController = TextEditingController();
+  final _inputPathController = TextEditingController();
+  final _outputPathController = TextEditingController();
+  final _projectNameController = TextEditingController();
+  final _itemNameController = TextEditingController();
+  final _flyoutSaveController = FlyoutController();
   // lupdate option fields
   bool _noObsolete = false;
   final _trFunctionName = TextEditingController();
@@ -23,6 +24,12 @@ class _LUpdatePageState extends State<LUpdatePage> {
 
   @override
   void dispose() {
+    _inputPathController.dispose();
+    _outputPathController.dispose();
+    _projectNameController.dispose();
+    _itemNameController.dispose();
+    _flyoutSaveController.dispose();
+
     _trFunctionName.dispose();
     _translateFunctionName.dispose();
     super.dispose();
@@ -145,18 +152,23 @@ class _LUpdatePageState extends State<LUpdatePage> {
                         saveItemName: 'LUpdate',
                         projectNameController: _projectNameController,
                         itemNameController: _itemNameController,
-                        createRunFunction: checkAndRunCommandLUpdate,
-                        createRunSaveFunction: saveCommandLUpdate),
+                        dropDownController: _flyoutSaveController,
+                        createRunFunction: runCommandLUpdate,
+                        createRunSaveFunction: saveRunCommandLUpdate,
+                        createSaveFunction: saveCommandLUpdate,),
                   ]
             )))
         ));
   }
 
-  void checkAndRunCommandLUpdate() {
+  void runCommandLUpdate() {
     // TODO
     return;}
 
   void saveCommandLUpdate(){
     // TODO
+    return;}
+
+  void saveRunCommandLUpdate(){
     return;}
 }

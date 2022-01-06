@@ -13,15 +13,29 @@ class RccPage extends StatefulWidget {
 
 class _RccPageState extends State<RccPage> {
   // default fields
-  var _inputPathController = TextEditingController();
-  var _outputPathController = TextEditingController();
-  var _projectNameController = TextEditingController();
-  var _itemNameController = TextEditingController();
+  final _inputPathController = TextEditingController();
+  final _outputPathController = TextEditingController();
+  final _projectNameController = TextEditingController();
+  final _itemNameController = TextEditingController();
+  final _flyoutSaveController = FlyoutController();
   // rcc option fields
-  TextEditingController _thresholdController = TextEditingController(text: '70');
-  TextEditingController _compressionController = TextEditingController(text: '-1');
+  final _thresholdController = TextEditingController(text: '70');
+  final _compressionController = TextEditingController(text: '-1');
   bool _useCompressionOptions = false;
   bool optionNoCompress = false;
+
+  @override
+  void dispose() {
+    _inputPathController.dispose();
+    _outputPathController.dispose();
+    _projectNameController.dispose();
+    _itemNameController.dispose();
+    _flyoutSaveController.dispose();
+
+    _thresholdController.dispose();
+    _compressionController.dispose();
+    super.dispose();
+  }
 
   /// need Enable and Disable all the compression options
   void checkBoxUseCompression(bool? newValue) {
@@ -123,15 +137,17 @@ class _RccPageState extends State<RccPage> {
                       saveItemName: 'RCC',
                       projectNameController: _projectNameController,
                       itemNameController: _itemNameController,
-                      createRunFunction: checkAndRunCommandRcc,
-                      createRunSaveFunction: saveCommandRcc),
+                      dropDownController: _flyoutSaveController,
+                      createRunFunction: runCommandRcc,
+                      createRunSaveFunction: saveRunCommandRcc,
+                      createSaveFunction: saveCommandRcc,),
                 ]
               )
         )))
     );
   }
 
-  void checkAndRunCommandRcc() {
+  void runCommandRcc() {
     // TODO
     return;}
 
@@ -139,16 +155,6 @@ class _RccPageState extends State<RccPage> {
     // TODO
     return;}
 
-  @override
-  void dispose() {
-    _inputPathController.dispose();
-    _outputPathController.dispose();
-    _projectNameController.dispose();
-    _itemNameController.dispose();
-
-    _thresholdController.dispose();
-    _compressionController.dispose();
-    super.dispose();
-  }
-
+  void saveRunCommandRcc(){
+    return;}
 }

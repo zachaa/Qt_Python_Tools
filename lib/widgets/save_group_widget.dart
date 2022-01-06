@@ -5,16 +5,21 @@ class SaveGroupWidget extends StatelessWidget {
   final String saveItemName;
   final TextEditingController projectNameController;
   final TextEditingController itemNameController;
+  final FlyoutController dropDownController;
   final VoidCallback createRunFunction;
   final VoidCallback createRunSaveFunction;
+  final VoidCallback createSaveFunction;
 
   const SaveGroupWidget(
       {Key? key,
       required this.saveItemName,
       required this.projectNameController,
       required this.itemNameController,
+      required this.dropDownController,
       required this.createRunFunction,
-      required this.createRunSaveFunction})
+      required this.createRunSaveFunction,
+      required this.createSaveFunction
+      })
       : super(key: key);
 
   @override
@@ -29,13 +34,39 @@ class SaveGroupWidget extends StatelessWidget {
                 Button(
                     child: Text('Create $saveItemName'),
                     onPressed: createRunFunction),
-                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const InfoLabel(label: 'Save as:'),
+                    SizedBox(
+                      height: 28,
+                      child: SplitButtonBar(
+                          style: SplitButtonThemeData(
+                            primaryButtonStyle: ButtonStyle(
+                                padding: ButtonState.all(const EdgeInsets.fromLTRB(11, 5, 11, 6))),
+                            actionButtonStyle: ButtonStyle(
+                                padding: ButtonState.all(const EdgeInsets.fromLTRB(8, 5, 11, 6))),
+                          ),
+                          buttons: [
+                            SizedBox(
+                              height: 28,
+                              child: Button(
+                                  child: const Text('Save and Run'),
+                                  onPressed: createRunSaveFunction),
+                            ),
+                            SizedBox(
+                              height: 28,
+                              child: DropDownButton(
+                                  controller: dropDownController,
+                                  contentWidth: 150,
+                                  items: [
+                                    DropDownButtonItem(
+                                        title: const Text('Save Only'),
+                                        onTap: createSaveFunction ),
+                                  ]),
+                            ),
+                          ]),
+                    ),
                     SizedBox(
                         width: 150,
                         child: TextBox(
@@ -48,11 +79,7 @@ class SaveGroupWidget extends StatelessWidget {
                           header: 'Name',
                           controller: itemNameController,
                         )),
-                    Button(
-                        child: const Text('Create and Save'),
-                        onPressed: createRunSaveFunction),
-                  ],
-                ),
+                  ]),
               ]),
       ),
     );

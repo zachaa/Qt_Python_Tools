@@ -10,13 +10,26 @@ class UicPage extends StatefulWidget {
 
 class _UicPageState extends State<UicPage> {
   // default fields
-  var _inputPathController = TextEditingController();
-  var _outputPathController = TextEditingController();
-  var _projectNameController = TextEditingController();
-  var _itemNameController = TextEditingController();
+  final _inputPathController = TextEditingController();
+  final _outputPathController = TextEditingController();
+  final _projectNameController = TextEditingController();
+  final _itemNameController = TextEditingController();
+  final _flyoutSaveController = FlyoutController();
   // uic option fields
-  var _resourceExtensionController = TextEditingController(text: 'rc_');
+  final _resourceExtensionController = TextEditingController(text: '_rc');
   bool _optionUicXpyqt = false;
+
+  @override
+  void dispose() {
+    _inputPathController.dispose();
+    _outputPathController.dispose();
+    _projectNameController.dispose();
+    _itemNameController.dispose();
+    _flyoutSaveController.dispose();
+
+    _resourceExtensionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +85,10 @@ class _UicPageState extends State<UicPage> {
                       saveItemName: 'UI',
                       projectNameController: _projectNameController,
                       itemNameController: _itemNameController,
-                      createRunFunction: checkAndRunCommandUic,
-                      createRunSaveFunction: saveCommandUic)
+                      dropDownController: _flyoutSaveController,
+                      createRunFunction: runCommandUic,
+                      createRunSaveFunction: saveRunCommandUic,
+                      createSaveFunction: saveCommandUic,)
                 ]
               )
         )))
@@ -84,7 +99,7 @@ class _UicPageState extends State<UicPage> {
     setState(() {_optionUicXpyqt = newValue!;});
   }
 
-  void checkAndRunCommandUic() {
+  void runCommandUic() {
     // TODO
     return;}
 
@@ -92,15 +107,6 @@ class _UicPageState extends State<UicPage> {
     // TODO
     return;}
 
-  @override
-  void dispose() {
-    _inputPathController.dispose();
-    _outputPathController.dispose();
-    _projectNameController.dispose();
-    _itemNameController.dispose();
-
-    _resourceExtensionController.dispose();
-    super.dispose();
-  }
-
+  void saveRunCommandUic(){
+    return ;}
 }
