@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 // table names
 const String tableUic = 'uic';
 const String tableRcc = 'rcc';
@@ -91,4 +93,23 @@ class QtCommand {
     'cmdOptions: $cmdOptions, cmdPyQtOptions: $cmdPyQtOptions, cmdPySideOptions: $cmdPySideOptions,'
     'pathInput: $inputExits, pathOutput: $outputExits}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      (other is QtCommand) ?
+          (id == other.id &&
+          pathInput == other.pathInput &&
+          pathOutput == other.pathOutput &&
+          projectName == other.projectName &&
+          itemName == other.itemName &&
+          cmdOptions == other.cmdOptions &&
+          cmdPyQtOptions == other.cmdPyQtOptions &&
+          cmdPySideOptions == other.cmdPySideOptions)
+          : false;
+
+  @override
+  int get hashCode => hashValues(
+      id, pathInput, pathOutput,
+      projectName, itemName,
+      cmdOptions, cmdPyQtOptions, cmdPySideOptions);
 }
