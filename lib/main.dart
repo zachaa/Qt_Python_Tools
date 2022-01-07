@@ -8,6 +8,7 @@ import 'command_db.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await App.init(); // load from globals
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle("Qt Tools for Python");
     setWindowMinSize(const Size(970, 670));
@@ -18,6 +19,10 @@ void main() async{
   //     path.join(await getDatabasesPath(), 'python_qt_tools.db'),
   //     onCreate: (db, version) => dbOnCreate(db, version),
   //     version: 1);
+
+  // set user default Qt Implementation
+  selectedQtImplementation = App.localStorage.getInt('default_qt_implementation') ?? 0;
+
   runApp(QtPythonApp());
 }
 
@@ -64,8 +69,8 @@ class QtPythonAppState extends State<QtPythonApp> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   PillButtonBar(
-                    selected: qtpyBarIndex,
-                    onChanged: (i) => setState(() => qtpyBarIndex = i),
+                    selected: selectedQtImplementation,
+                    onChanged: (i) => setState(() => selectedQtImplementation = i),
                     items: const [
                       PillButtonBarItem(text: Text('PyQt5')),
                       PillButtonBarItem(text: Text('PyQt6')),

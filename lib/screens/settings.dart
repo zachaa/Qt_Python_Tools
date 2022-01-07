@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '/globals.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -100,22 +100,20 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  _readSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    _pathPyqt5Controller.text = prefs.getString('path_pyqt5') ?? '';
-    _pathPyqt6Controller.text = prefs.getString('path_pyqt6') ?? '';
-    _pathPyside2Controller.text = prefs.getString('path_pyside2') ?? '';
-    _pathPyside6Controller.text = prefs.getString('path_pyside6') ?? '';
-    _currentRadioButtonIndex = prefs.getInt('default_python_qt') ?? -1;
+  _readSettings() {
+    _pathPyqt5Controller.text = App.localStorage.getString('path_pyqt5') ?? '';
+    _pathPyqt6Controller.text = App.localStorage.getString('path_pyqt6') ?? '';
+    _pathPyside2Controller.text = App.localStorage.getString('path_pyside2') ?? '';
+    _pathPyside6Controller.text = App.localStorage.getString('path_pyside6') ?? '';
+    _currentRadioButtonIndex = App.localStorage.getInt('default_qt_implementation') ?? 0;
   }
 
-  _saveSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('path_pyqt5', _pathPyqt5Controller.text);
-    prefs.setString('path_pyqt6', _pathPyqt6Controller.text);
-    prefs.setString('path_pyside2', _pathPyside2Controller.text);
-    prefs.setString('path_pyside6', _pathPyside6Controller.text);
-    prefs.setInt('default_python_qt', _currentRadioButtonIndex);
+  _saveSettings() {
+    App.localStorage.setString('path_pyqt5', _pathPyqt5Controller.text);
+    App.localStorage.setString('path_pyqt6', _pathPyqt6Controller.text);
+    App.localStorage.setString('path_pyside2', _pathPyside2Controller.text);
+    App.localStorage.setString('path_pyside6', _pathPyside6Controller.text);
+    App.localStorage.setInt('default_qt_implementation', _currentRadioButtonIndex);
   }
 
 }
