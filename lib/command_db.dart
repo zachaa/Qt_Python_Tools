@@ -1,4 +1,6 @@
 import 'package:path/path.dart';
+import 'package:sqflite_common/sqlite_api.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite/sqflite.dart';
 import '/commands_model.dart';
 
@@ -19,10 +21,19 @@ class QtCommandDatabase {
   }
 
   Future<Database> _initDB(String filePath) async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, filePath);
+    // final dbPath = await getDatabasesPath();
+    // await getDatabasesPath() does not seem to work on desktop (and maybe web)
+    // https://github.com/tekartik/sqflite/issues/452
+    // TODO get the proper path, I want the same as SharedPreferences path
+    const String FORCE_PATH = r'C:\Users\Zachary\IdeaProjects\qt_python_tools';
+    // final path = join(dbPath, filePath);
+    final path = join(FORCE_PATH, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _dbOnCreate);
+    sqfliteFfiInit();
+    var databaseFactory = databaseFactoryFfi;
+    var dbOptions = OpenDatabaseOptions(version: 1, onCreate: _dbOnCreate);
+    return await databaseFactory.openDatabase(path, options: dbOptions);
+    // return await openDatabase(path, version: 1, onCreate: _dbOnCreate);
   }
 
   /// Create the database tables, runs first time only.
@@ -38,7 +49,9 @@ CREATE TABLE $tableUic(
  ${QtCmdFields.itemName} $textType,
  ${QtCmdFields.pathInput} $textType,
  ${QtCmdFields.pathOutput} $textType,
- ${QtCmdFields.cmdExtraArgs} $textType)""");
+ ${QtCmdFields.cmdOptions} $textType,
+ ${QtCmdFields.cmdPyQtOptions} $textType,
+ ${QtCmdFields.cmdPySideOptions} $textType)""");
     batch.execute("""
 CREATE TABLE $tableRcc(
  ${QtCmdFields.id} $idType, 
@@ -46,7 +59,9 @@ CREATE TABLE $tableRcc(
  ${QtCmdFields.itemName} $textType,
  ${QtCmdFields.pathInput} $textType,
  ${QtCmdFields.pathOutput} $textType,
- ${QtCmdFields.cmdExtraArgs} $textType)""");
+ ${QtCmdFields.cmdOptions} $textType,
+ ${QtCmdFields.cmdPyQtOptions} $textType,
+ ${QtCmdFields.cmdPySideOptions} $textType)""");
     batch.execute("""
 CREATE TABLE $tableLUpdate(
  ${QtCmdFields.id} $idType, 
@@ -54,7 +69,9 @@ CREATE TABLE $tableLUpdate(
  ${QtCmdFields.itemName} $textType,
  ${QtCmdFields.pathInput} $textType,
  ${QtCmdFields.pathOutput} $textType,
- ${QtCmdFields.cmdExtraArgs} $textType)""");
+ ${QtCmdFields.cmdOptions} $textType,
+ ${QtCmdFields.cmdPyQtOptions} $textType,
+ ${QtCmdFields.cmdPySideOptions} $textType)""");
     batch.execute("""
 CREATE TABLE $tableLRelease(
  ${QtCmdFields.id} $idType, 
@@ -62,7 +79,9 @@ CREATE TABLE $tableLRelease(
  ${QtCmdFields.itemName} $textType,
  ${QtCmdFields.pathInput} $textType,
  ${QtCmdFields.pathOutput} $textType,
- ${QtCmdFields.cmdExtraArgs} $textType)""");
+ ${QtCmdFields.cmdOptions} $textType,
+ ${QtCmdFields.cmdPyQtOptions} $textType,
+ ${QtCmdFields.cmdPySideOptions} $textType)""");
     await batch.commit();
   }
 
