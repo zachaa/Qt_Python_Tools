@@ -47,3 +47,4 @@ app.*.map.json
 
 # this package
 *.db
+trial_files/
