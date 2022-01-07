@@ -1,5 +1,14 @@
+import 'dart:io' as io;
 import 'package:fluent_ui/fluent_ui.dart';
+
+import 'package:qt_python_tools/globals.dart';
+import 'package:qt_python_tools/process/command_builder.dart';
 import 'package:qt_python_tools/widgets/save_group_widget.dart';
+import 'package:qt_python_tools/commands_model.dart';
+import 'package:qt_python_tools/command_db.dart';
+import 'package:qt_python_tools/input_checks.dart';
+import 'package:qt_python_tools/process/command_uic.dart';
+import '../widgets/popup_dialogs.dart';
 
 class UicPage extends StatefulWidget {
   const UicPage({Key? key}) : super(key: key);
@@ -101,14 +110,80 @@ class _UicPageState extends State<UicPage> {
     setState(() {_optionUicXpyqt = newValue!;});
   }
 
+  CommandUIC constructCommand() {
+    return CommandUIC(
+        inputpath: _inputPathController.text,
+        outputpath: _outputPathController.text,
+        pyqtXOption: _optionUicXpyqt,
+        pyqtResourceExtension: _resourceExtensionController.text);
+  }
+
+  bool _saveCommandUic(projectName, itemName){
+    if (checkProjectItemName(projectName, itemName, context)){return true;}
+    return false;
+  }
+
+  bool _runCommandUicCheck(String inputPath, String outputPath, int qtImplementation){
+    // check to make sure paths and tools exist and are valid
+    if (!checkInputOutput(inputPath, outputPath, context)) {return false;}
+    if (!checkInputFilePathExist(inputPath, context)) {return false;}
+    if (!checkQtImplementationDirectory(qtImplementation, context)) {return false;}
+    if (!checkIfValidTool(qtImplementation, 'uic', context)) {return false;}
+    return true;
+  }
+
+  // Actually execute the command
+  void _runCommandUicProcess(CommandUIC command){
+    List<String> argsList = command.getArgumentsList(selectedQtImplementation);
+    String? executable = getExecutableFullPath(selectedQtImplementation, 'uic');
+    if (executable == null) {return;} // This /should/ never happen because check should prevent it.
+
+    // run the command with command_builder function
+    print(executable);
+    print(argsList);
+    // io.ProcessResult? result = runQtProcess(executable, argsList);
+    //
+    // if (result == null) {return;} // Success!
+    // else { // There was an error, show the error message to user
+    //   showDialog(
+    //     context: context,
+    //     builder: (_) => messageDialog(context,
+    //         'Run Error',
+    //         result.stderr as String));
+    // }
+  }
+
   void runCommandUic() {
-    // TODO
-    return;}
+    String inputPath = _inputPathController.text;
+    String outputPath = _outputPathController.text;
+    if (!_runCommandUicCheck(inputPath, outputPath, selectedQtImplementation)) {return;}
+
+    CommandUIC command = constructCommand();
+    _runCommandUicProcess(command);
+  }
 
   void saveCommandUic(){
-    // TODO
-    return;}
+    String projectName = _projectNameController.text;
+    String itemName = _itemNameController.text;
+    if (!_saveCommandUic(projectName, itemName)) {return;}
+    CommandUIC command = constructCommand();
+    QtCommand qtCommand = command.getQtCommand(projectName, itemName);
+    QtCommandDatabase.instance.insertQtCommand(qtCommand, tableUic);
+  }
 
   void saveRunCommandUic(){
-    return ;}
+    String projectName = _projectNameController.text;
+    String itemName = _itemNameController.text;
+    String inputPath = _inputPathController.text;
+    String outputPath = _outputPathController.text;
+    if (_saveCommandUic(projectName, itemName) &&
+        _runCommandUicCheck(inputPath, outputPath, selectedQtImplementation)){
+      // Save command
+      CommandUIC command = constructCommand();
+      QtCommand qtCommand = command.getQtCommand(projectName, itemName);
+      QtCommandDatabase.instance.insertQtCommand(qtCommand, tableUic);
+      // Run command
+      _runCommandUicProcess(command);
+    }
+  }
 }
