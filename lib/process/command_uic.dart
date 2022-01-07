@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:ui';
 import 'package:qt_python_tools/commands_model.dart';
+import 'package:qt_python_tools/process/command_base.dart';
 
-class CommandUIC{
+/// Class for creating pyuic#/pyside#-uic commands to run with Process
+class CommandUIC extends Command{
   final String inputpath;
   final String outputpath;
   final bool pyqtXOption;
@@ -13,6 +15,7 @@ class CommandUIC{
     required this.pyqtXOption,
     required this.pyqtResourceExtension});
 
+  /// Creates a command from a QtCommand (selected from the Home table)
   static CommandUIC fromQtCommand(QtCommand qtCommand){
     // uic command does not have any PySide options or shared options
     bool xOpt = false;
@@ -47,7 +50,6 @@ class CommandUIC{
     //String extension = pyqtResourceExtension ?? '""'; // does this work
     return '--resource-suffix="$pyqtResourceExtension"';
     // if (extension.isNotEmpty) {return '--resource_suffix="$extension"';}
-    // return null;
   }
 
   ///Gives the pyqtOptions string for use with QtCommand
@@ -58,6 +60,7 @@ class CommandUIC{
   }
 
   /// Creates a QtCommand to add to a database of previous commands
+  @override
   QtCommand getQtCommand(String projectName, String itemName){
     return QtCommand(projectName: projectName, itemName: itemName,
         pathInput: inputpath, pathOutput: outputpath,
@@ -66,6 +69,7 @@ class CommandUIC{
   }
 
   /// Gives the arguments of the uic command in a list for use with Process.run
+  @override
   List<String> getArgumentsList(int qtImplementation){
     List<String> argList = [inputpath];
     if (qtImplementation <= 1) {  // PyQt5 and PyQt6 only
