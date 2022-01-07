@@ -64,7 +64,7 @@ class QtCommand {
 
   Map<String, dynamic> toMap() =>
     {
-      'id': id,
+      '_id': id,
       'projectName': projectName,
       'itemName': itemName,
       'pathInput': pathInput,
@@ -89,7 +89,7 @@ class QtCommand {
   String toString() {
     bool inputExits = pathInput.isNotEmpty;
     bool outputExits = pathOutput.isNotEmpty;
-    return 'QtCommand{id: $id, projectName: $projectName, itemName: $itemName,'
+    return 'QtCommand{_id: $id, projectName: $projectName, itemName: $itemName,'
     'cmdOptions: $cmdOptions, cmdPyQtOptions: $cmdPyQtOptions, cmdPySideOptions: $cmdPySideOptions,'
     'pathInput: $inputExits, pathOutput: $outputExits}';
   }
