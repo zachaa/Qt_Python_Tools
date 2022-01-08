@@ -1,10 +1,11 @@
 import 'dart:io';  // for platform info
 import 'package:window_size/window_size.dart';  // for controlling window size
 import 'package:fluent_ui/fluent_ui.dart';
+
 import 'globals.dart';
+import 'theme.dart';
+import 'data/command_db.dart';
 import 'screens/screens.dart';
-import 'theme.dart';  // theme and accent colors
-import 'command_db.dart';
 
 
 void main() async{

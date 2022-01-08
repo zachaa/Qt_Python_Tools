@@ -1,9 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart' as sf;
 import 'package:syncfusion_flutter_core/theme.dart' as sf;
+
 import '/theme.dart';
-import '/command_db.dart';
-import '/commands_model.dart';
+import '/data/command_db.dart';
+import '/data/commands_model.dart';
 
 /// This should come from some external source
 List<QtCommand> getQtCommands() {

@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:qt_python_tools/theme.dart';
-import 'package:qt_python_tools/widgets/save_group_widget.dart';
+import '/theme.dart';
+import '/widgets/save_group_widget.dart';
 
 
 class LUpdatePage extends StatefulWidget {

@@ -1,8 +1,9 @@
 import 'dart:io' as io;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:path/path.dart';
-import 'package:qt_python_tools/widgets/popup_dialogs.dart';
+
 import 'globals.dart';
+import '/widgets/popup_dialogs.dart';
 
 
 bool checkProjectItemName(String projectName, String itemName, BuildContext context){

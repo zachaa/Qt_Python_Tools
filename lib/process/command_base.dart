@@ -1,4 +1,4 @@
-import 'package:qt_python_tools/commands_model.dart';
+import '/data/commands_model.dart';
 
 abstract class Command{
   const Command();

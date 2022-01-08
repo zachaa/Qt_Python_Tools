@@ -1,8 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:sqflite/sqflite.dart';
-import '/commands_model.dart';
+import 'commands_model.dart';
 
 class QtCommandDatabase {
   ///global field

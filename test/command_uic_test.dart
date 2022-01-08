@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 import 'package:qt_python_tools/process/command_uic.dart';
-import 'package:qt_python_tools/commands_model.dart';
+import 'package:qt_python_tools/data/commands_model.dart';
 
 void main(){
   String inputPath = r"C:\Users\Zachary\PycharmProjects\First_Project\4input-1output.ui";

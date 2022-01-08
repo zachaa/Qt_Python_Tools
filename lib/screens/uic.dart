@@ -1,14 +1,15 @@
 import 'dart:io' as io;
 import 'package:fluent_ui/fluent_ui.dart';
 
-import 'package:qt_python_tools/globals.dart';
-import 'package:qt_python_tools/process/command_builder.dart';
-import 'package:qt_python_tools/widgets/save_group_widget.dart';
-import 'package:qt_python_tools/commands_model.dart';
-import 'package:qt_python_tools/command_db.dart';
-import 'package:qt_python_tools/input_checks.dart';
-import 'package:qt_python_tools/process/command_uic.dart';
-import '../widgets/popup_dialogs.dart';
+import '/globals.dart';
+import '/input_checks.dart';
+import '/data/commands_model.dart';
+import '/data/command_db.dart';
+import '/process/command_builder.dart';
+import '/process/command_uic.dart';
+import '/widgets/popup_dialogs.dart';
+import '/widgets/save_group_widget.dart';
+
 
 class UicPage extends StatefulWidget {
   const UicPage({Key? key}) : super(key: key);

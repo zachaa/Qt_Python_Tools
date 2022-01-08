@@ -1,6 +1,6 @@
 import 'dart:ui';
-import 'package:qt_python_tools/commands_model.dart';
-import 'package:qt_python_tools/process/command_base.dart';
+import '/data/commands_model.dart';
+import '/process/command_base.dart';
 
 /// Class for creating pyuic#/pyside#-uic commands to run with Process
 class CommandUIC extends Command{

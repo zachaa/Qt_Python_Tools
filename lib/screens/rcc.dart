@@ -1,7 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
-import '../formatters/NumericalRangeFormatter.dart';
-import 'package:qt_python_tools/widgets/save_group_widget.dart';
+
+import '/formatters/NumericalRangeFormatter.dart';
+import '/widgets/save_group_widget.dart';
 
 
 class RccPage extends StatefulWidget {
