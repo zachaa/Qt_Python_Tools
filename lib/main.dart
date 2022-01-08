@@ -1,6 +1,7 @@
 import 'dart:io';  // for platform info
 import 'package:window_size/window_size.dart';  // for controlling window size
 import 'package:fluent_ui/fluent_ui.dart';
+import 'globals.dart';
 import 'screens/screens.dart';
 import 'theme.dart';  // theme and accent colors
 import 'command_db.dart';
@@ -14,11 +15,6 @@ void main() async{
     setWindowMinSize(const Size(970, 670));
     setWindowFrame(const Rect.fromLTWH(50, 200, 1020, 710));
   }
-  // TODO use database
-  // final database = openDatabase(
-  //     path.join(await getDatabasesPath(), 'python_qt_tools.db'),
-  //     onCreate: (db, version) => dbOnCreate(db, version),
-  //     version: 1);
 
   // set user default Qt Implementation
   selectedQtImplementation = App.localStorage.getInt('default_qt_implementation') ?? 0;
@@ -35,7 +31,12 @@ class QtPythonApp extends StatefulWidget {
 
 class QtPythonAppState extends State<QtPythonApp> {
   int navIndex = 0;
-  int qtpyBarIndex = 0;
+
+  @override
+  void dispose() {
+    QtCommandDatabase.instance.close();  //TODO do we do this here or on each page?
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

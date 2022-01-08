@@ -199,22 +199,58 @@ class _HomePageState extends State<HomePage> {
     'cmdPySideOptions': double.nan,
   };
 
+  late List<QtCommand> lupdateCommands = <QtCommand>[];
+  late QtCommandDataSource _lupdateCommandsDataSource;
+  late Map<String, double> lupdateColumnWidths = {
+    // for user column resizing
+    'project_name': double.nan,
+    'item_name': double.nan,
+    'input_path': double.nan,
+    'output_path': double.nan,
+    'cmdOptions': double.nan,
+    'cmdPyQtOptions': double.nan,
+    'cmdPySideOptions': double.nan,
+  };
+
   @override
   void initState() {
     // uicCommands = getQtCommands();
     // _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
-    rccCommands = getQtCommands();
-    _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
+    // rccCommands = getQtCommands();
+    // _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
     super.initState();
-    refreshTables();
+    // refreshTables();
   }
 
-  Future refreshTables() async {
-    uicCommands = await QtCommandDatabase.instance.readAllCommands(tableUic);
+  Future<List> getUicCommands() async{
+    await Future.delayed(const Duration(seconds: 1)); // TODO remove test
+    uicCommands =  await QtCommandDatabase.instance.readAllCommands(tableUic);
     _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
-    // rccCommands = await QtCommandDatabase.instance.readAllCommands(tableRcc);
-    // _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
+    return uicCommands;
   }
+
+  Future<List> getRccCommands() async{
+    await Future.delayed(const Duration(seconds: 2));
+    rccCommands =  await QtCommandDatabase.instance.readAllCommands(tableRcc);
+    _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
+    return rccCommands;
+  }
+
+  Future<List> getLUpdateCommands() async{
+    await Future.delayed(const Duration(seconds: 3));
+    List<QtCommand> lupdateCommands =  await QtCommandDatabase.instance.readAllCommands(tableLUpdate);
+    _lupdateCommandsDataSource = QtCommandDataSource(commands: lupdateCommands);
+    return lupdateCommands;
+  }
+
+  // TODO do tables update within program when adding command?
+
+  // void refreshTables() async {
+  //   uicCommands = await QtCommandDatabase.instance.readAllCommands(tableUic);
+  //   _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
+  //   // rccCommands = await QtCommandDatabase.instance.readAllCommands(tableRcc);
+  //   // _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
+  // }
 
   // @override
   // void dispose() {
@@ -235,33 +271,74 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          uicCommands.isEmpty
-                              ? const Center(
-                                  child: Text('No Uic Commands',
-                                      style: TextStyle(fontSize: 20)))
-                              : ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      minHeight: 80, maxHeight: 140),
-                                  child: giveSfCommandDataTable(
-                                      _uicCommandsDataSource,
-                                      uicColumnWidths,
-                                      QtToolThemeColors.uicColor)),
+                          FutureBuilder( // Database may not have loaded yet
+                              future: getUicCommands(),
+                              builder: (context, data) {
+                                return data.hasData
+                                    ? uicCommands.isEmpty
+                                      ? const Center(
+                                          child: Text('No Uic Commands',
+                                          style: TextStyle(fontSize: 20)))
+                                      : ConstrainedBox(
+                                            constraints: const BoxConstraints(
+                                                minHeight: 80, maxHeight: 140),
+                                            child: giveSfCommandDataTable(
+                                                _uicCommandsDataSource,
+                                                uicColumnWidths,
+                                                QtToolThemeColors.uicColor))
+                                    : const Center(
+                                        child: ProgressRing(
+                                          activeColor: QtToolThemeColors.uicColor,));
+                              }),
                           Button(
                               child: const Text('Run Uic'),
                               onPressed: runExistingUic),
                           const SizedBox(height: 10),
-                          // TODO re-enable later with database
-                          ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                  minHeight: 80, maxHeight: 140),
-                              child: giveSfCommandDataTable(
-                                  _rccCommandsDataSource,
-                                  rccColumnWidths,
-                                  QtToolThemeColors.rccColor)),
+                          FutureBuilder( // Database may not have loaded yet
+                              future: getRccCommands(),
+                              builder: (context, data) {
+                                return data.hasData
+                                    ? rccCommands.isEmpty
+                                    ? const Center(
+                                    child: Text('No Rcc Commands',
+                                        style: TextStyle(fontSize: 20)))
+                                    : ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                        minHeight: 80, maxHeight: 140),
+                                    child: giveSfCommandDataTable(
+                                        _rccCommandsDataSource,
+                                        rccColumnWidths,
+                                        QtToolThemeColors.rccColor))
+                                    : const Center(
+                                    child: ProgressRing(
+                                      activeColor: QtToolThemeColors.rccColor,));
+                              }),
                           Button(
                               child: const Text('Run Rcc'),
                               onPressed: runExistingRcc),
                           const SizedBox(height: 10),
+                          FutureBuilder( // Database may not have loaded yet
+                              future: getLUpdateCommands(),
+                              builder: (context, data) {
+                                return data.hasData
+                                    ? lupdateCommands.isEmpty
+                                    ? const Center(
+                                    child: Text('No LUpdate Commands',
+                                        style: TextStyle(fontSize: 20)))
+                                    : ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                        minHeight: 80, maxHeight: 140),
+                                    child: giveSfCommandDataTable(
+                                        _lupdateCommandsDataSource,
+                                        lupdateColumnWidths,
+                                        QtToolThemeColors.lupdateColor))
+                                    : const Center(
+                                    child: ProgressRing(
+                                        activeColor: QtToolThemeColors.lupdateColor));
+                              }),
+                          Button(
+                              child: const Text('Run LUpdate'),
+                              onPressed: runExistingLUpdate),
                         ],
                     ),
                 )),
@@ -365,5 +442,9 @@ class _HomePageState extends State<HomePage> {
 
   void runExistingRcc() {
     print('run existing rcc command');
+  }
+
+  void runExistingLUpdate() {
+    print('run existing lupdate command');
   }
 }
