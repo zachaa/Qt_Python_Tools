@@ -6,66 +6,6 @@ import '/theme.dart';
 import '/data/command_db.dart';
 import '/data/commands_model.dart';
 
-/// This should come from some external source
-List<QtCommand> getQtCommands() {
-  return <QtCommand>[
-    const QtCommand(
-        id: 1,
-        projectName: "Amtz2",
-        itemName: "ui_Settings",
-        pathInput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.ui",
-        pathOutput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdOptions: "-x",
-        cmdPyQtOptions: "",
-        cmdPySideOptions: ""),
-    const QtCommand(
-        id: 2,
-        projectName: "Amtz2",
-        itemName: "ui_main_page",
-        pathInput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\data_table_widget.ui",
-        pathOutput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdOptions: "-x",
-        cmdPyQtOptions: "",
-        cmdPySideOptions: ""),
-    const QtCommand(
-        id: 3,
-        projectName: "Amtz2",
-        itemName: "ui_dates",
-        pathInput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\data_table_widget.ui",
-        pathOutput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdOptions: "-x",
-        cmdPyQtOptions: "",
-        cmdPySideOptions: ""),
-    const QtCommand(
-        id: 4,
-        projectName: "Amtz2",
-        itemName: "ui_combo_widget_box",
-        pathInput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\data_table_widget.ui",
-        pathOutput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdOptions: "-x",
-        cmdPyQtOptions: "",
-        cmdPySideOptions: ""),
-    const QtCommand(
-        id: 5,
-        projectName: "Amtz2",
-        itemName: "ui_table",
-        pathInput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\data_table_widget.ui",
-        pathOutput:
-            r"C:\Users\Zachary\PycharmProjects\Amortization-V2\dark_planet\gui\core_widgets\ui\ui_settings.py",
-        cmdOptions: "-x",
-        cmdPyQtOptions: "",
-        cmdPySideOptions: ""),
-  ];
-}
 
 class QtCommandDataSource extends sf.DataGridSource {
   QtCommandDataSource({required List<QtCommand> commands}) {
@@ -213,16 +153,9 @@ class _HomePageState extends State<HomePage> {
     'cmdPySideOptions': double.nan,
   };
 
-  @override
-  void initState() {
-    // uicCommands = getQtCommands();
-    // _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
-    // rccCommands = getQtCommands();
-    // _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
-    super.initState();
-    // refreshTables();
-  }
-
+  /// --------------------------------------------------
+  /// Future Lists (unique for each table) for FutureBuilder
+  /// --------------------------------------------------
   Future<List> getUicCommands() async{
     await Future.delayed(const Duration(seconds: 1)); // TODO remove test
     uicCommands =  await QtCommandDatabase.instance.readAllCommands(tableUic);
@@ -243,21 +176,6 @@ class _HomePageState extends State<HomePage> {
     _lupdateCommandsDataSource = QtCommandDataSource(commands: lupdateCommands);
     return lupdateCommands;
   }
-
-  // TODO do tables update within program when adding command?
-
-  // void refreshTables() async {
-  //   uicCommands = await QtCommandDatabase.instance.readAllCommands(tableUic);
-  //   _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
-  //   // rccCommands = await QtCommandDatabase.instance.readAllCommands(tableRcc);
-  //   // _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
-  // }
-
-  // @override
-  // void dispose() {
-  //   QtCommandDatabase.instance.close();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
