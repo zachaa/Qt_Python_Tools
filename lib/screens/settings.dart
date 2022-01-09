@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import '/globals.dart';
+import '/theme.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -47,9 +48,35 @@ class _SettingsPageState extends State<SettingsPage> {
         content: Padding(
             padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
             child:Wrap( // use wrap instead of Column to use spacing
-                spacing: 20,     // the horizontal spacing
-                runSpacing: 20,  // the vertical spacing
+                spacing: 14,     // the horizontal spacing
+                runSpacing: 14,  // the vertical spacing
                 children: [
+                  Mica( // Outline box
+                    backgroundColor: QtToolThemeColors.qtGreenBase,
+                    child: Padding(padding: const EdgeInsets.all(1),
+                      child:SizedBox(
+                        width: 440,
+                        child: Mica( // Mica is like a group box, it's a different color
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child:InfoLabel(
+                                label: 'Default Python Qt Package',
+                                child: Padding(
+                                    padding:const EdgeInsets.fromLTRB(10, 4, 8, 4),
+                                    child:Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: List.generate(radioButtons.length, (index) {
+                                        return RadioButton(
+                                          checked: _currentRadioButtonIndex == index,
+                                          onChanged: (value) => setState(() => _currentRadioButtonIndex = index),
+                                          content: Text(radioButtons[index]),
+                                        );
+                                      }),
+                                    )
+                                )
+                            )
+                      ))),
+                  )),
                   TextBox(
                     header: 'PyQt5 Path',
                     controller: _pathPyqt5Controller,
@@ -70,30 +97,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     controller: _pathPyside6Controller,
                     placeholder: 'C:/...',
                   ),
-                  SizedBox(
-                    width: 440,
-                    child: Mica( // Mica is like a group box, it's a different color
-                        child: InfoLabel(
-                            label: 'Default Python Qt Package',
-                            child: Padding(
-                                padding:const EdgeInsets.all(8),
-                                child:Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: List.generate(radioButtons.length, (index) {
-                                    return RadioButton(
-                                      checked: _currentRadioButtonIndex == index,
-                                      // set onChanged to null to disable the button
-                                      onChanged: (value) => setState(() => _currentRadioButtonIndex = index),
-                                      content: Text(radioButtons[index]),
-                                    );
-                                  }),
-                                )
-                            )
-                        )
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  Button(child: const Text('Save Settings'), onPressed: _saveSettings,)
+                  Mica(
+                      backgroundColor: QtToolThemeColors.qtGreenBase.withOpacity(0.5),
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                      child: Padding(padding: const EdgeInsets.all(1),
+                          child:Button(
+                            child: const Text('Save Settings'),
+                            onPressed: _saveSettings,)),
+                  )
                 ]
             )
         )
