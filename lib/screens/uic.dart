@@ -143,7 +143,18 @@ class _UicPageState extends State<UicPage> {
   void _runCommandUicProcess(CommandUIC command){
     List<String> argsList = command.getArgumentsList(selectedQtImplementation);
     String? executable = getExecutableFullPath(selectedQtImplementation, 'uic');
-    if (executable == null) {return;} // This /should/ never happen because check should prevent it.
+    // This *should* never happen because check should prevent it.
+    if (executable == null || executable.isEmpty) {return;}
+    // Must be input and output path at minimum. This *should* never happen.
+    if (argsList.length < 2) {
+      showDialog(
+          context: context,
+          builder: (_) => messageDialog(context,
+              'Arguments error',
+              'Not enough arguments given (need at least 2).\n'
+              '${argsList.toString()}'));
+      return;
+    }
 
     // run the command with command_builder function
     print(executable);
