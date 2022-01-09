@@ -1,14 +1,12 @@
-import 'dart:io' as io;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:qt_python_tools/theme.dart';
 
 import '/globals.dart';
 import '/input_checks.dart';
+import '/run_process.dart';
 import '/data/commands_model.dart';
 import '/data/command_db.dart';
-import '/process/command_builder.dart';
 import '/process/command_uic.dart';
-import '/widgets/popup_dialogs.dart';
 import '/widgets/save_group_widget.dart';
 
 
@@ -140,51 +138,16 @@ class _UicPageState extends State<UicPage> {
     return true;
   }
 
-  /// Internal run command that runs the process
-  void _runCommandUicProcess(CommandUIC command) async{
-    List<String> argsList = command.getArgumentsList(selectedQtImplementation);
-    String? executable = getExecutableFullPath(selectedQtImplementation, 'uic');
-    // This *should* never happen because check should prevent it.
-    if (executable == null || executable.isEmpty) {return;}
-    // Must be input and output path at minimum. This *should* never happen.
-    if (argsList.length < 2) {
-      showDialog(
-          context: context,
-          builder: (_) => messageDialog(context,
-              'Arguments error',
-              'Not enough arguments given (need at least 2).\n'
-              '${argsList.toString()}'));
-      return;
-    }
-
-    // Run the command with command_builder function and show progress dialog
-    showDialog(
-        context: context,
-        builder: (_) => processingDialog(context, 'Running UIC',
-          QtToolThemeColors.uicColor,
-        ));
-    await Future.delayed(const Duration(seconds: 1));
-    io.ProcessResult result = await runQtProcess(executable, argsList);
-    Navigator.pop(context); // close the dialog
-
-    // Exit if good, Show error message popup if bad
-    if (result.exitCode == 0) {return;} // Success!
-    else { // There was an error, show the error message to user
-      showDialog(
-        context: context,
-        builder: (_) => messageDialog(context,
-            'Run Error',
-            result.stderr as String));
-    }
-  }
-
   void runCommandUic() {
     String inputPath = _inputPathController.text;
     String outputPath = _outputPathController.text;
     if (!_runCommandUicCheck(inputPath, outputPath, selectedQtImplementation)) {return;}
     // Run command
     CommandUIC command = constructCommand();
-    _runCommandUicProcess(command);
+    runCommandProcess(command, 'uic',
+        selectedQtImplementation,
+        'Running UIC',
+        QtToolThemeColors.uicColor, context);
   }
 
   void saveCommandUic(){
@@ -212,7 +175,10 @@ class _UicPageState extends State<UicPage> {
       QtCommand qtCommand = command.getQtCommand(projectName, itemName);
       QtCommandDatabase.instance.insertQtCommand(qtCommand, tableUic);
       // Run command
-      _runCommandUicProcess(command);
+      runCommandProcess(command, 'uic',
+          selectedQtImplementation,
+          'Running UIC',
+          QtToolThemeColors.uicColor, context);
     }
   }
 }
