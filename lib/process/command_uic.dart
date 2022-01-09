@@ -79,7 +79,8 @@ class CommandUIC extends Command{
     if (qtImplementation == 0){  // PyQt5 only
       argList.add(_resourceExtension());
     }
-    argList.add('-o $outputpath');
+    argList.add('-o');
+    argList.add(outputpath);
     return argList;
   }
 
