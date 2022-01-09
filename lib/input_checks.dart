@@ -30,6 +30,17 @@ bool checkInputOutput(String inputPath, String outputPath, BuildContext context)
   return true;
 }
 
+bool checkExtension(String filePath, String inputWidgetName, List<String> allowedExtensions, BuildContext context) {
+  String ext = extension(filePath).replaceAll('.', '');
+  if (allowedExtensions.contains(ext)) {return true;}
+  showDialog(
+      context: context,
+      builder: (_) => messageDialog(context,
+          'Invalid File Extension',
+          'The $inputWidgetName field requires a ${allowedExtensions.toString()} file extension.'));
+  return false;
+}
+
 bool checkInputFilePathExist(String inputPath, BuildContext context){
   if (io.File(inputPath).existsSync()) {return true;}
   showDialog(

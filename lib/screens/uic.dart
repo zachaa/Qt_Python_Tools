@@ -119,14 +119,20 @@ class _UicPageState extends State<UicPage> {
         pyqtResourceExtension: _resourceExtensionController.text);
   }
 
-  bool _saveCommandUic(projectName, itemName){
+  /// Internal check to make sure paths are valid and names exist
+  bool _saveCommandUic(String projectName, String itemName, String inputPath, String outputPath){
+    if (!checkInputOutput(inputPath, outputPath, context)) {return false;}
+    if (!checkExtension(inputPath, 'Input File', ['ui'], context)){return false;}
+    if (!checkExtension(outputPath, 'Output File', ['py'], context)){return false;}
     if (checkProjectItemName(projectName, itemName, context)){return true;}
     return false;
   }
 
+  /// Internal check to make sure paths and tools exists and are valid
   bool _runCommandUicCheck(String inputPath, String outputPath, int qtImplementation){
-    // check to make sure paths and tools exist and are valid
     if (!checkInputOutput(inputPath, outputPath, context)) {return false;}
+    if (!checkExtension(inputPath, 'Input File', ['ui'], context)){return false;}
+    if (!checkExtension(outputPath, 'Output File', ['py'], context)){return false;}
     if (!checkInputFilePathExist(inputPath, context)) {return false;}
     if (!checkQtImplementationDirectory(qtImplementation, context)) {return false;}
     if (!checkIfValidTool(qtImplementation, 'uic', context)) {return false;}
@@ -158,7 +164,7 @@ class _UicPageState extends State<UicPage> {
     String inputPath = _inputPathController.text;
     String outputPath = _outputPathController.text;
     if (!_runCommandUicCheck(inputPath, outputPath, selectedQtImplementation)) {return;}
-
+    // Run command
     CommandUIC command = constructCommand();
     _runCommandUicProcess(command);
   }
@@ -166,7 +172,10 @@ class _UicPageState extends State<UicPage> {
   void saveCommandUic(){
     String projectName = _projectNameController.text;
     String itemName = _itemNameController.text;
-    if (!_saveCommandUic(projectName, itemName)) {return;}
+    String inputPath = _inputPathController.text;
+    String outputPath = _outputPathController.text;
+    if (!_saveCommandUic(projectName, itemName, inputPath, outputPath)) {return;}
+    // Save command
     CommandUIC command = constructCommand();
     QtCommand qtCommand = command.getQtCommand(projectName, itemName);
     QtCommandDatabase.instance.insertQtCommand(qtCommand, tableUic);
@@ -177,7 +186,8 @@ class _UicPageState extends State<UicPage> {
     String itemName = _itemNameController.text;
     String inputPath = _inputPathController.text;
     String outputPath = _outputPathController.text;
-    if (_saveCommandUic(projectName, itemName) &&
+    // check to make sure all fields are valid
+    if (_saveCommandUic(projectName, itemName, inputPath, outputPath) &&
         _runCommandUicCheck(inputPath, outputPath, selectedQtImplementation)){
       // Save command
       CommandUIC command = constructCommand();
