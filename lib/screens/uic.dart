@@ -1,9 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:qt_python_tools/theme.dart';
 
 import '/globals.dart';
 import '/input_checks.dart';
 import '/run_process.dart';
+import '/theme.dart';
 import '/data/commands_model.dart';
 import '/data/command_db.dart';
 import '/process/command_uic.dart';
