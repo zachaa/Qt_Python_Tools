@@ -1,5 +1,6 @@
 import 'dart:io' as io;
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:qt_python_tools/theme.dart';
 
 import '/globals.dart';
 import '/input_checks.dart';
@@ -139,8 +140,8 @@ class _UicPageState extends State<UicPage> {
     return true;
   }
 
-  // Actually execute the command
-  void _runCommandUicProcess(CommandUIC command){
+  /// Internal run command that runs the process
+  void _runCommandUicProcess(CommandUIC command) async{
     List<String> argsList = command.getArgumentsList(selectedQtImplementation);
     String? executable = getExecutableFullPath(selectedQtImplementation, 'uic');
     // This *should* never happen because check should prevent it.
@@ -156,19 +157,25 @@ class _UicPageState extends State<UicPage> {
       return;
     }
 
-    // run the command with command_builder function
-    print(executable);
-    print(argsList);
-    // io.ProcessResult? result = runQtProcess(executable, argsList);
-    //
-    // if (result == null) {return;} // Success!
-    // else { // There was an error, show the error message to user
-    //   showDialog(
-    //     context: context,
-    //     builder: (_) => messageDialog(context,
-    //         'Run Error',
-    //         result.stderr as String));
-    // }
+    // Run the command with command_builder function and show progress dialog
+    showDialog(
+        context: context,
+        builder: (_) => processingDialog(context, 'Running UIC',
+          QtToolThemeColors.uicColor,
+        ));
+    await Future.delayed(const Duration(seconds: 1));
+    io.ProcessResult result = await runQtProcess(executable, argsList);
+    Navigator.pop(context); // close the dialog
+
+    // Exit if good, Show error message popup if bad
+    if (result.exitCode == 0) {return;} // Success!
+    else { // There was an error, show the error message to user
+      showDialog(
+        context: context,
+        builder: (_) => messageDialog(context,
+            'Run Error',
+            result.stderr as String));
+    }
   }
 
   void runCommandUic() {

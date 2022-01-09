@@ -13,3 +13,13 @@ ContentDialog messageDialog(BuildContext context, String title, String message){
           ))],
   );
 }
+
+ContentDialog processingDialog(BuildContext context, String title, Color color){
+  return ContentDialog(
+    title: Center(child: Text(title, style: TextStyle(color: color))),
+    content: Center(child: ProgressRing(activeColor: color)),
+    backgroundDismiss: false, // We can't have this being dismissed
+    // Center maximizes the area so we need to limit width
+    constraints: const BoxConstraints(minHeight: 120, maxWidth: 220),
+  );
+}

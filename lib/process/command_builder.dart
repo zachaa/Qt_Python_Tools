@@ -19,12 +19,8 @@ String? getExecutableFullPath(int qtImplementation, String toolName){
   return join(pathToScripts, qtPyTool + '.exe');
 }
 
-io.ProcessResult? runQtProcess(String executable, List<String> arguments) {
-  var result = io.Process.runSync(executable, arguments);
-  print(result.stdout);
-  if (result.exitCode == 0){
-    return null;
-  } else {
-    return result;
-  }
+/// Runs the process asynchronously to allow for progress dialog to show
+Future<io.ProcessResult> runQtProcess(String executable, List<String> arguments) async{
+  var result = io.Process.run(executable, arguments);
+  return result;
 }
