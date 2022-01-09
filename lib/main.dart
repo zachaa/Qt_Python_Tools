@@ -1,5 +1,5 @@
 import 'dart:io';  // for platform info
-import 'package:window_size/window_size.dart';  // for controlling window size
+import 'package:window_size/window_size.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 import 'globals.dart';
@@ -31,11 +31,13 @@ class QtPythonApp extends StatefulWidget {
 }
 
 class QtPythonAppState extends State<QtPythonApp> {
+  // index used by the Side Navigation
   int navIndex = 0;
 
   @override
   void dispose() {
-    QtCommandDatabase.instance.close();  //TODO do we do this here or on each page?
+    // only close database at very end
+    QtCommandDatabase.instance.close();
     super.dispose();
   }
 
@@ -44,7 +46,7 @@ class QtPythonAppState extends State<QtPythonApp> {
     return FluentApp(
         theme: ThemeData(
             brightness: Brightness.dark,
-            accentColor: QtToolThemeColors.qtGreenAccent, // This is not a Color but and AccentColor
+            accentColor: QtToolThemeColors.qtGreenAccent, // This is not a Color but an AccentColor
             iconTheme: const IconThemeData(size: 26),
             pillButtonBarTheme: PillButtonBarThemeData(
               selectedColor: ButtonState.all(QtToolThemeColors.qtGreenBase), // can't just set a Color here
@@ -93,27 +95,33 @@ class QtPythonAppState extends State<QtPythonApp> {
             displayMode: PaneDisplayMode.open,  //TODO auto?
             items: [
               PaneItem(
-                icon: const Icon(FluentIcons.home, color: QtToolThemeColors.qtGreenBase),
+                icon: const Icon(FluentIcons.home,
+                    color: QtToolThemeColors.qtGreenBase),
                 title: const Text("Home")),
               PaneItemSeparator(),
               PaneItemHeader(header: const Text("Tools")),
               PaneItem(
-                icon: const Icon(FluentIcons.translate, color: QtToolThemeColors.lreleaseColor),
+                icon: const Icon(FluentIcons.translate,
+                    color: QtToolThemeColors.lreleaseColor),
                 title: const Text("LRelease")),
               PaneItem(
-                icon: const Icon(FluentIcons.locale_language, color: QtToolThemeColors.lupdateColor), // Colors.pink does not exist in fluent Colors
+                icon: const Icon(FluentIcons.locale_language,
+                    color: QtToolThemeColors.lupdateColor),
                 title: const Text("LUpdate")),
               PaneItem(
-                icon: const Icon(FluentIcons.folder_open, color: QtToolThemeColors.rccColor),
+                icon: const Icon(FluentIcons.folder_open,
+                    color: QtToolThemeColors.rccColor),
                 title: const Text("Rcc")),
               PaneItem(
-                icon: const Icon(FluentIcons.devices2, color: QtToolThemeColors.uicColor),
+                icon: const Icon(FluentIcons.devices2,
+                    color: QtToolThemeColors.uicColor),
                 title: const Text("Uic")),
               ],
             footerItems: [
               PaneItemSeparator(),
               PaneItem(
-                icon: const Icon(FluentIcons.settings, color: QtToolThemeColors.qtGreenBase),
+                icon: const Icon(FluentIcons.settings,
+                    color: QtToolThemeColors.qtGreenBase),
                 title: const Text('Settings')),
               PaneItemHeader(
                   header: Text('Version 0.1.0',
@@ -122,13 +130,13 @@ class QtPythonAppState extends State<QtPythonApp> {
           ),
           content: NavigationBody(
             index: navIndex,
-            children: [
-              const HomePage(), /// probably not going to be const
-              const LReleasePage(),
-              const LUpdatePage(),
-              const RccPage(),
-              const UicPage(),
-              const SettingsPage(), /// probably not going to be const
+            children: const [
+              HomePage(),
+              LReleasePage(),
+              LUpdatePage(),
+              RccPage(),
+              UicPage(),
+              SettingsPage(),
             ],
           ),
         )
