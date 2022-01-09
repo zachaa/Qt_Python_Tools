@@ -2,14 +2,7 @@ import 'dart:io' as io;
 import 'package:path/path.dart';
 import '/globals.dart';
 
-/// Provides a way to return multiple variables at once since this is not native to dart
-// class BoolMessage{
-//   final bool isValid;
-//   final String message;
-//
-//   const BoolMessage({required this.isValid, required this.message});
-// }
-
+/// Gets the absolute path to the [toolName] exe for the given [0-3] [qtImplementation]
 String? getExecutableFullPath(int qtImplementation, String toolName){
   String qtPyTool = commandMap[toolName]![qtImplementation] ?? '';
   if (qtPyTool == '') {return null;}
@@ -19,7 +12,8 @@ String? getExecutableFullPath(int qtImplementation, String toolName){
   return join(pathToScripts, qtPyTool + '.exe');
 }
 
-/// Runs the process asynchronously to allow for progress dialog to show
+/// Runs the process asynchronously to allow for progress dialog to show given
+/// the absolute path [executable] with the list [arguments].
 Future<io.ProcessResult> runQtProcess(String executable, List<String> arguments) async{
   var result = io.Process.run(executable, arguments);
   return result;
