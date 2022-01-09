@@ -1,7 +1,14 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 
+import '/globals.dart';
+import '/input_checks.dart';
+import '/run_process.dart';
+import '/theme.dart';
+import '/data/commands_model.dart';
+import '/data/command_db.dart';
 import '/formatters/NumericalRangeFormatter.dart';
+import '/process/command_rcc.dart';
 import '/widgets/save_group_widget.dart';
 
 
@@ -104,7 +111,7 @@ class _RccPageState extends State<RccPage> {
                                         child:TextBox(
                                           header: 'Threshold Value',  // TODO starting value 70
                                           controller: _thresholdController,
-                                          enabled: _useCompressionOptions,
+                                          enabled: _useCompressionOptions && !optionNoCompress,
                                           keyboardType: TextInputType.number,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.digitsOnly,
@@ -121,7 +128,7 @@ class _RccPageState extends State<RccPage> {
                                       child: TextBox(
                                         header: 'Compression Value',  // TODO starting value -1
                                         controller: _compressionController,
-                                        enabled: _useCompressionOptions,
+                                        enabled: _useCompressionOptions && !optionNoCompress,
                                         keyboardType: TextInputType.number,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.digitsOnly,
@@ -148,14 +155,77 @@ class _RccPageState extends State<RccPage> {
     );
   }
 
+  CommandRCC constructCommand(){
+    return CommandRCC(
+        inputpath: _inputPathController.text,
+        outputpath: _outputPathController.text,
+        useCompressionOptions: _useCompressionOptions,
+        useNoCompression: optionNoCompress,
+        compressionThreshold: _thresholdController.text,
+        compressionValue: _compressionController.text);
+  }
+
+  /// Internal check to make sure paths are valid and names exist
+  bool _saveCommandRcc(String projectName, String itemName, String inputPath, String outputPath){
+    if (!checkInputOutput(inputPath, outputPath, context)) {return false;}
+    if (!checkExtension(inputPath, 'Input File', ['qrc'], context)){return false;}
+    if (!checkExtension(outputPath, 'Output File', ['py'], context)){return false;}
+    if (checkProjectItemName(projectName, itemName, context)){return true;}
+    return false;
+  }
+
+  /// Internal check to make sure paths and tools exists and are valid
+  bool _runCommandRccCheck(String inputPath, String outputPath, int qtImplementation){
+    if (!checkInputOutput(inputPath, outputPath, context)) {return false;}
+    if (!checkExtension(inputPath, 'Input File', ['qrc'], context)){return false;}
+    if (!checkExtension(outputPath, 'Output File', ['py'], context)){return false;}
+    if (!checkInputFilePathExist(inputPath, context)) {return false;}
+    if (!checkQtImplementationDirectory(qtImplementation, context)) {return false;}
+    if (!checkIfValidTool(qtImplementation, 'rcc', context)) {return false;}
+    return true;
+  }
+
   void runCommandRcc() {
-    // TODO
-    return;}
+    String inputPath = _inputPathController.text;
+    String outputPath = _outputPathController.text;
+    if (!_runCommandRccCheck(inputPath, outputPath, selectedQtImplementation)) {return;}
+    // Run command
+    CommandRCC command = constructCommand();
+    runCommandProcess(command, 'rcc',
+        selectedQtImplementation,
+        'Running RCC',
+        QtToolThemeColors.rccColor, context);
+  }
 
   void saveCommandRcc(){
-    // TODO
-    return;}
+    String projectName = _projectNameController.text;
+    String itemName = _itemNameController.text;
+    String inputPath = _inputPathController.text;
+    String outputPath = _outputPathController.text;
+    if (!_saveCommandRcc(projectName, itemName, inputPath, outputPath)) {return;}
+    // Save command
+    CommandRCC command = constructCommand();
+    QtCommand qtCommand = command.getQtCommand(projectName, itemName);
+    QtCommandDatabase.instance.insertQtCommand(qtCommand, tableRcc);
+  }
 
   void saveRunCommandRcc(){
-    return;}
+    String projectName = _projectNameController.text;
+    String itemName = _itemNameController.text;
+    String inputPath = _inputPathController.text;
+    String outputPath = _outputPathController.text;
+    // check to make sure all fields are valid
+    if (_saveCommandRcc(projectName, itemName, inputPath, outputPath) &&
+        _runCommandRccCheck(inputPath, outputPath, selectedQtImplementation)){
+      // Save command
+      CommandRCC command = constructCommand();
+      QtCommand qtCommand = command.getQtCommand(projectName, itemName);
+      QtCommandDatabase.instance.insertQtCommand(qtCommand, tableRcc);
+      // Run command
+      runCommandProcess(command, 'rcc',
+          selectedQtImplementation,
+          'Running RCC',
+          QtToolThemeColors.rccColor, context);
+    }
+  }
 }
