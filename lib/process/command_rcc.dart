@@ -34,17 +34,17 @@ class CommandRCC extends Command{
       useCompressOpt = false;
     } else {
         useCompressOpt = true;
-        List<String> splitPyQtArgs = qtCommand.cmdPyQtOptions.split(' ');
+        List<String> splitQtArgs = qtCommand.cmdOptions.split(' ');
         // need to make sure different elements are valid
-        for (var i=0; i<splitPyQtArgs.length; i++) {
-          if (splitPyQtArgs[i] == '-no-compress'){
+        for (var i=0; i<splitQtArgs.length; i++) {
+          if (splitQtArgs[i] == '-no-compress'){
             useNoCompress = true;
             continue;
-          } else if (splitPyQtArgs[i] == '-threshold'){
-            compressThresh = splitPyQtArgs[i+1];
+          } else if (splitQtArgs[i] == '-threshold'){
+            compressThresh = splitQtArgs[i+1];
             continue;
-          } else if (splitPyQtArgs[i] == '-compress'){
-            compressValue = splitPyQtArgs[i+1];
+          } else if (splitQtArgs[i] == '-compress'){
+            compressValue = splitQtArgs[i+1];
           }
         }
     }

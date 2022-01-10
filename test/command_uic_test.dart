@@ -59,25 +59,25 @@ void main(){
   });
   group('argsList from CommandUIC', (){
     test('argsList from pyqt5 with 2 pyqtOptions', (){
-      expect(commandUIC_pyqtA.getArgumentsList(0), equals([inputPath, '-x', '--resource-suffix="_rc"', '-o $outputPath']));
+      expect(commandUIC_pyqtA.getArgumentsList(0), equals([inputPath, '-x', '--resource-suffix="_rc"', '-o', outputPath]));
     });
     test('argsList from pyqt5 with 2 pyqtOptions with empty resource suffix', (){
-      expect(commandUIC_pyqtB.getArgumentsList(0), equals([inputPath, '-x', '--resource-suffix=""', '-o $outputPath']));
+      expect(commandUIC_pyqtB.getArgumentsList(0), equals([inputPath, '-x', '--resource-suffix=""', '-o', outputPath]));
     });
     test('argsList from pyqt5 with 1 pyqtOptions with empty resource suffix', (){
-      expect(commandUIC_pyqtC.getArgumentsList(0), equals([inputPath, '--resource-suffix=""', '-o $outputPath']));
+      expect(commandUIC_pyqtC.getArgumentsList(0), equals([inputPath, '--resource-suffix=""', '-o', outputPath]));
     });
     test('argsList from pyqt6 with 1 pyqtOptions with empty resource suffix', (){
-      expect(commandUIC_pyqtC.getArgumentsList(1), equals([inputPath, '-o $outputPath']));
+      expect(commandUIC_pyqtC.getArgumentsList(1), equals([inputPath, '-o', outputPath]));
     });
     test('argsList from pySide2 with 1 pyqtOptions with empty resource suffix', (){
-      expect(commandUIC_pyqtC.getArgumentsList(2), equals([inputPath, '-o $outputPath']));
+      expect(commandUIC_pyqtC.getArgumentsList(2), equals([inputPath, '-o', outputPath]));
     });
     test('argsList from pySide2 with 2 pyqtOptions', (){
-      expect(commandUIC_pyqtA.getArgumentsList(2), equals([inputPath, '-o $outputPath']));
+      expect(commandUIC_pyqtA.getArgumentsList(2), equals([inputPath, '-o', outputPath]));
     });
     test('argsList from pySide6 with 2 pyqtOptions with empty resource suffix', (){
-      expect(commandUIC_pyqtB.getArgumentsList(3), equals([inputPath, '-o $outputPath']));
+      expect(commandUIC_pyqtB.getArgumentsList(3), equals([inputPath, '-o', outputPath]));
     });
   });
 }
