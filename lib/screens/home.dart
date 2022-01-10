@@ -164,14 +164,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List> getRccCommands() async{
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     rccCommands =  await QtCommandDatabase.instance.readAllCommands(tableRcc);
     _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
     return rccCommands;
   }
 
   Future<List> getLUpdateCommands() async{
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     List<QtCommand> lupdateCommands =  await QtCommandDatabase.instance.readAllCommands(tableLUpdate);
     _lupdateCommandsDataSource = QtCommandDataSource(commands: lupdateCommands);
     return lupdateCommands;
@@ -194,70 +194,88 @@ class _HomePageState extends State<HomePage> {
                               future: getUicCommands(),
                               builder: (context, data) {
                                 return data.hasData
-                                    ? uicCommands.isEmpty
-                                      ? const Center(
-                                          child: Text('No Uic Commands',
-                                          style: TextStyle(fontSize: 20)))
-                                      : ConstrainedBox(
-                                            constraints: const BoxConstraints(
-                                                minHeight: 80, maxHeight: 140),
-                                            child: giveSfCommandDataTable(
-                                                _uicCommandsDataSource,
-                                                uicColumnWidths,
-                                                QtToolThemeColors.uicColor))
-                                    : const Center(
-                                        child: ProgressRing(
-                                          activeColor: QtToolThemeColors.uicColor,));
+                                  ? uicCommands.isEmpty //|| _uicCommandsDataSource == null
+                                    ? const Center(
+                                        child: Text('No Uic Commands',
+                                        style: TextStyle(fontSize: 20)))
+                                    : Column(
+                                      children: [
+                                        ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                              minHeight: 80, maxHeight: 140),
+                                          child:
+                                              giveSfCommandDataTable(
+                                                  _uicCommandsDataSource,
+                                                  uicColumnWidths,
+                                                  QtToolThemeColors.uicColor),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        giveTableButtonsRow('Uic',
+                                            runExistingUic,
+                                            deleteExistingUic),
+                                      ])
+                                  : const Center(
+                                    child: ProgressRing(
+                                      activeColor: QtToolThemeColors.uicColor));
                               }),
-                          Button(
-                              child: const Text('Run Uic'),
-                              onPressed: runExistingUic),
                           const SizedBox(height: 10),
                           FutureBuilder( // Database may not have loaded yet
                               future: getRccCommands(),
                               builder: (context, data) {
                                 return data.hasData
-                                    ? rccCommands.isEmpty
+                                  ? rccCommands.isEmpty
                                     ? const Center(
-                                    child: Text('No Rcc Commands',
+                                        child: Text('No Rcc Commands',
                                         style: TextStyle(fontSize: 20)))
-                                    : ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                        minHeight: 80, maxHeight: 140),
-                                    child: giveSfCommandDataTable(
-                                        _rccCommandsDataSource,
-                                        rccColumnWidths,
-                                        QtToolThemeColors.rccColor))
-                                    : const Center(
+                                    : Column(
+                                      children: [
+                                        ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                            minHeight: 80, maxHeight: 140),
+                                          child:
+                                            giveSfCommandDataTable(
+                                                _rccCommandsDataSource,
+                                                rccColumnWidths,
+                                                QtToolThemeColors.rccColor),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        giveTableButtonsRow('Rcc',
+                                            runExistingRcc,
+                                            deleteExistingRcc),
+                                      ])
+                                  : const Center(
                                     child: ProgressRing(
-                                      activeColor: QtToolThemeColors.rccColor,));
+                                      activeColor: QtToolThemeColors.rccColor));
                               }),
-                          Button(
-                              child: const Text('Run Rcc'),
-                              onPressed: runExistingRcc),
                           const SizedBox(height: 10),
                           FutureBuilder( // Database may not have loaded yet
                               future: getLUpdateCommands(),
                               builder: (context, data) {
                                 return data.hasData
-                                    ? lupdateCommands.isEmpty
+                                  ? lupdateCommands.isEmpty
                                     ? const Center(
-                                    child: Text('No LUpdate Commands',
-                                        style: TextStyle(fontSize: 20)))
-                                    : ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                        minHeight: 80, maxHeight: 140),
-                                    child: giveSfCommandDataTable(
-                                        _lupdateCommandsDataSource,
-                                        lupdateColumnWidths,
-                                        QtToolThemeColors.lupdateColor))
-                                    : const Center(
+                                        child: Text('No LUpdate Commands',
+                                          style: TextStyle(fontSize: 20)))
+                                    : Column(
+                                      children: [
+                                        ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                              minHeight: 80, maxHeight: 140),
+                                          child:
+                                            giveSfCommandDataTable(
+                                                _lupdateCommandsDataSource,
+                                                lupdateColumnWidths,
+                                                QtToolThemeColors.lupdateColor),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        giveTableButtonsRow('LUpdate',
+                                            runExistingLUpdate,
+                                            deleteExistingLUpdate),
+                                      ])
+                                  : const Center(
                                     child: ProgressRing(
-                                        activeColor: QtToolThemeColors.lupdateColor));
+                                      activeColor: QtToolThemeColors.lupdateColor));
                               }),
-                          Button(
-                              child: const Text('Run LUpdate'),
-                              onPressed: runExistingLUpdate),
                         ],
                     ),
                 )),
@@ -355,6 +373,79 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// Gives a row with 2 buttons for running and deleting commands for the table
+  Row giveTableButtonsRow(
+      String name,
+      VoidCallback runFunction,
+      VoidCallback deleteFunction) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+            Button(
+                child: Text('Run $name Command'),
+                onPressed: runFunction),
+            const SizedBox(width: 10),
+            Button(
+                child: Text('Delete $name Command'),
+                onPressed: deleteFunction)
+    ]);
+  }
+
+  /// The main widget for each table of commands.
+  ///
+  /// Returns a FutureBuilder with with [futureFunction] giving [commandsList]
+  /// that is used in [dataSource]. Table widths are user adjustable with
+  /// [columnWidths]. Two buttons are below the table (if data exists) that
+  /// connect to [runFunction] and [deleteFunction].
+  /// [name] and [color] tells user what table it is.
+  ///
+  /// While data is loading a spinner is displayed.
+  /// If no data is found a message is show in place of the table.
+  FutureBuilder giveFutureBuilderTable(
+      Future<dynamic> futureFunction,
+      String name,
+      List<QtCommand> commandsList,
+      QtCommandDataSource? dataSource,
+      Map<String, double> columnWidths,
+      VoidCallback runFunction,
+      VoidCallback deleteFunction,
+      Color color) {
+    return FutureBuilder(
+        future: futureFunction,
+        builder: (context, data) {
+          print(data.hasData);
+          print(dataSource); // The model is not updating when coming back to page even though list does
+          return (data.connectionState != ConnectionState.done)
+            ? const ProgressRing(activeColor: QtToolThemeColors.qtGreenBase)
+            : data.hasData
+            ? (commandsList.isEmpty || dataSource == null)
+                ? Center(
+                    child: Text('No $name Commands',
+                      style: TextStyle(fontSize: 16,
+                          color: Colors.grey[80])))
+                : Column(
+                    children: [
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(
+                            minHeight: 80, maxHeight: 140),
+                        child: giveSfCommandDataTable(
+                            dataSource,
+                            columnWidths,
+                            color),
+                      ),
+                      const SizedBox(height: 10),
+                      giveTableButtonsRow(
+                          name,
+                          runFunction,
+                          deleteFunction),
+                      ])
+            : Center(
+                child: ProgressRing(
+                  activeColor: color));
+        },
+    );
+  }
+
   void runExistingUic() {
     print('run existing uic command');
   }
@@ -365,5 +456,17 @@ class _HomePageState extends State<HomePage> {
 
   void runExistingLUpdate() {
     print('run existing lupdate command');
+  }
+
+  void deleteExistingUic(){
+    print('delete uic');
+  }
+
+  void deleteExistingRcc(){
+    print('delete rcc');
+  }
+
+  void deleteExistingLUpdate(){
+    print('delete lupdate');
   }
 }
