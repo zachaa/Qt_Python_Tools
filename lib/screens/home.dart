@@ -156,26 +156,42 @@ class _HomePageState extends State<HomePage> {
   /// --------------------------------------------------
   /// Future Lists (unique for each table) for FutureBuilder
   /// --------------------------------------------------
-  Future<List> getUicCommands() async{
+  Future<List<QtCommand>> getUicCommands() async{
     await Future.delayed(const Duration(seconds: 1)); // TODO remove test
     uicCommands =  await QtCommandDatabase.instance.readAllCommands(tableUic);
     _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
     return uicCommands;
   }
 
-  Future<List> getRccCommands() async{
+  Future<List<QtCommand>> getRccCommands() async{
     await Future.delayed(const Duration(seconds: 1));
     rccCommands =  await QtCommandDatabase.instance.readAllCommands(tableRcc);
     _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
     return rccCommands;
   }
 
-  Future<List> getLUpdateCommands() async{
+  Future<List<QtCommand>> getLUpdateCommands() async{
     await Future.delayed(const Duration(seconds: 1));
     List<QtCommand> lupdateCommands =  await QtCommandDatabase.instance.readAllCommands(tableLUpdate);
     _lupdateCommandsDataSource = QtCommandDataSource(commands: lupdateCommands);
     return lupdateCommands;
   }
+
+  var uicCommandsForFuture;
+  var rccCommandsForFuture;
+  var lupdateCommandsForFuture;
+
+  @override
+  void initState() {
+    // Save Future<List> here to prevent loading each time on table resize
+    // since table data does not change
+    // TODO what happens if item is deleted though?
+    uicCommandsForFuture = getUicCommands();
+    rccCommandsForFuture = getRccCommands();
+    lupdateCommandsForFuture = getLUpdateCommands();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -191,90 +207,99 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FutureBuilder( // Database may not have loaded yet
-                              future: getUicCommands(),
+                              future: uicCommandsForFuture,
                               builder: (context, data) {
-                                return data.hasData
-                                  ? uicCommands.isEmpty //|| _uicCommandsDataSource == null
-                                    ? const Center(
-                                        child: Text('No Uic Commands',
-                                        style: TextStyle(fontSize: 20)))
-                                    : Column(
-                                      children: [
-                                        ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                              minHeight: 80, maxHeight: 140),
-                                          child:
-                                              giveSfCommandDataTable(
-                                                  _uicCommandsDataSource,
-                                                  uicColumnWidths,
-                                                  QtToolThemeColors.uicColor),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        giveTableButtonsRow('Uic',
-                                            runExistingUic,
-                                            deleteExistingUic),
-                                      ])
-                                  : const Center(
-                                    child: ProgressRing(
-                                      activeColor: QtToolThemeColors.uicColor));
+                                return data.connectionState != ConnectionState.done
+                                  ? const Center(child: ProgressRing(
+                                      activeColor: QtToolThemeColors.uicColor))
+                                  : data.hasError
+                                    ? Text(data.error.toString())
+                                    : data.hasData
+                                      ? uicCommands.isEmpty
+                                        ? const Center(
+                                            child: Text('No Uic Commands',
+                                            style: TextStyle(fontSize: 20)))
+                                        : Column(
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                  minHeight: 80, maxHeight: 140),
+                                              child:
+                                                  giveSfCommandDataTable(
+                                                      _uicCommandsDataSource,
+                                                      uicColumnWidths,
+                                                      QtToolThemeColors.uicColor),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            giveTableButtonsRow('Uic',
+                                                runExistingUic,
+                                                deleteExistingUic),
+                                          ])
+                                      : const Text('No Data, Should not see');
                               }),
                           const SizedBox(height: 10),
                           FutureBuilder( // Database may not have loaded yet
-                              future: getRccCommands(),
+                              future: rccCommandsForFuture,
                               builder: (context, data) {
-                                return data.hasData
-                                  ? rccCommands.isEmpty
-                                    ? const Center(
-                                        child: Text('No Rcc Commands',
-                                        style: TextStyle(fontSize: 20)))
-                                    : Column(
-                                      children: [
-                                        ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                            minHeight: 80, maxHeight: 140),
-                                          child:
-                                            giveSfCommandDataTable(
-                                                _rccCommandsDataSource,
-                                                rccColumnWidths,
-                                                QtToolThemeColors.rccColor),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        giveTableButtonsRow('Rcc',
-                                            runExistingRcc,
-                                            deleteExistingRcc),
-                                      ])
-                                  : const Center(
-                                    child: ProgressRing(
-                                      activeColor: QtToolThemeColors.rccColor));
+                                return data.connectionState != ConnectionState.done
+                                  ? const Center(child: ProgressRing(
+                                      activeColor: QtToolThemeColors.rccColor))
+                                  : data.hasError
+                                    ? Text(data.error.toString())
+                                    : data.hasData
+                                      ? rccCommands.isEmpty
+                                        ? const Center(
+                                            child: Text('No Rcc Commands',
+                                            style: TextStyle(fontSize: 20)))
+                                        : Column(
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                  minHeight: 80, maxHeight: 140),
+                                              child:
+                                                  giveSfCommandDataTable(
+                                                      _rccCommandsDataSource,
+                                                      rccColumnWidths,
+                                                      QtToolThemeColors.rccColor),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            giveTableButtonsRow('Rcc',
+                                                runExistingRcc,
+                                                deleteExistingRcc),
+                                          ])
+                                      : const Text('No Data, Should not see');
                               }),
                           const SizedBox(height: 10),
                           FutureBuilder( // Database may not have loaded yet
-                              future: getLUpdateCommands(),
+                              future: lupdateCommandsForFuture,
                               builder: (context, data) {
-                                return data.hasData
-                                  ? lupdateCommands.isEmpty
-                                    ? const Center(
-                                        child: Text('No LUpdate Commands',
-                                          style: TextStyle(fontSize: 20)))
-                                    : Column(
-                                      children: [
-                                        ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                              minHeight: 80, maxHeight: 140),
-                                          child:
-                                            giveSfCommandDataTable(
-                                                _lupdateCommandsDataSource,
-                                                lupdateColumnWidths,
-                                                QtToolThemeColors.lupdateColor),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        giveTableButtonsRow('LUpdate',
-                                            runExistingLUpdate,
-                                            deleteExistingLUpdate),
-                                      ])
-                                  : const Center(
-                                    child: ProgressRing(
-                                      activeColor: QtToolThemeColors.lupdateColor));
+                                return data.connectionState != ConnectionState.done
+                                  ? const Center(child: ProgressRing(
+                                      activeColor: QtToolThemeColors.lupdateColor))
+                                  : data.hasError
+                                    ? Text(data.error.toString())
+                                    : data.hasData
+                                      ? lupdateCommands.isEmpty
+                                        ? const Center(
+                                            child: Text('No LUpdate Commands',
+                                            style: TextStyle(fontSize: 20)))
+                                        : Column(
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                  minHeight: 80, maxHeight: 140),
+                                              child:
+                                                  giveSfCommandDataTable(
+                                                      _lupdateCommandsDataSource,
+                                                      lupdateColumnWidths,
+                                                      QtToolThemeColors.lupdateColor),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            giveTableButtonsRow('Lupdate',
+                                                runExistingLUpdate,
+                                                deleteExistingLUpdate),
+                                          ])
+                                      : const Text('No Data, Should not see');
                               }),
                         ],
                     ),
@@ -413,7 +438,7 @@ class _HomePageState extends State<HomePage> {
       Future<dynamic> futureFunction,
       String name,
       List<QtCommand> commandsList,
-      QtCommandDataSource? dataSource,
+      QtCommandDataSource dataSource,
       Map<String, double> columnWidths,
       VoidCallback runFunction,
       VoidCallback deleteFunction,
@@ -421,37 +446,33 @@ class _HomePageState extends State<HomePage> {
     return FutureBuilder(
         future: futureFunction,
         builder: (context, data) {
-          print(data.hasData);
-          print(dataSource); // The model is not updating when coming back to page even though list does
-          return (data.connectionState != ConnectionState.done)
-            ? const ProgressRing(activeColor: QtToolThemeColors.qtGreenBase)
-            : data.hasData
-            ? (commandsList.isEmpty || dataSource == null)
-                ? Center(
-                    child: Text('No $name Commands',
-                      style: TextStyle(fontSize: 16,
-                          color: Colors.grey[80])))
-                : Column(
-                    children: [
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(
-                            minHeight: 80, maxHeight: 140),
-                        child: giveSfCommandDataTable(
-                            dataSource,
-                            columnWidths,
-                            color),
-                      ),
-                      const SizedBox(height: 10),
-                      giveTableButtonsRow(
-                          name,
-                          runFunction,
-                          deleteFunction),
-                      ])
-            : Center(
-                child: ProgressRing(
-                  activeColor: color));
-        },
-    );
+          return data.connectionState != ConnectionState.done
+            ? Center(child: ProgressRing(activeColor: color))
+            : data.hasError
+                ? Text(data.error.toString())
+                : data.hasData
+                  ? commandsList.isEmpty //|| _uicCommandsDataSource == null
+                      ? Center(
+                          child: Text('No $name Commands',
+                          style: const TextStyle(fontSize: 20)))
+                      : Column(
+                          children: [
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                  minHeight: 80, maxHeight: 140),
+                              child:
+                                  giveSfCommandDataTable(
+                                      dataSource,
+                                      columnWidths,
+                                      color),
+                            ),
+                            const SizedBox(height: 10),
+                            giveTableButtonsRow(name,
+                                runFunction,
+                                deleteFunction),
+                          ])
+                  : const Text('No Data, Should not see');
+        });
   }
 
   void runExistingUic() {
