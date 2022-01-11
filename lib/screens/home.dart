@@ -282,7 +282,10 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  /// Gives a DataTable displaying the data from the given dataSource
+  /// Gives a DataTable displaying the data from the given [dataSource].
+  /// Adjustable columns with [columnWidthsMap] and the color of the table
+  /// is determined by [primaryColor] which is faded for the
+  /// selected row and hovered row.
   SingleChildScrollView giveSfCommandDataTable(sf.DataGridSource dataSource,
       Map<String, double> columnWidthsMap, Color primaryColor) {
     return SingleChildScrollView(
@@ -347,12 +350,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Give the grid columns used in all the tables
-  sf.GridColumn giveSfGridColumn(
-      String colName,
-      String colTitle,
-      Map<String, double> columnWidthsMap,
-      double minWidth,
-      double maxWidth,
+  ///
+  /// - [colName] = identifier
+  /// - [colTitle] = Displayed title string
+  /// - [columnWidthsMap] = map with [colName] and double.nan for each column
+  /// - [minWidth] & [maxWidth] = min and max column width, use double.nan for any
+  /// - [widthMode] = sf.ColumnWidthMode
+  sf.GridColumn giveSfGridColumn(String colName, String colTitle,
+      Map<String, double> columnWidthsMap, double minWidth, double maxWidth,
       sf.ColumnWidthMode widthMode) {
     return sf.GridColumn(
       columnName: colName,
@@ -374,6 +379,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Gives a row with 2 buttons for running and deleting commands for the table
+  ///
+  /// Each button displays text with [name] in it. The left button
+  /// uses [runFunction] and the right button uses [deleteFunction].
   Row giveTableButtonsRow(
       String name,
       VoidCallback runFunction,
