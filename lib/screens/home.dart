@@ -43,16 +43,18 @@ class QtCommandDataSource extends sf.DataGridSource {
         case 'item_name':
           {
             c = Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-                child: Text(
-                  dataGridCell.value.toString().replaceAll("", "\u{200B}"),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  softWrap: false,
-                  style: const TextStyle(
-                      fontSize: 12, color: QtToolThemeColors.tableTextColor),
-                ));
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+                  child: Tooltip(
+                    message: dataGridCell.value.toString(),
+                    child:  Text(
+                      dataGridCell.value.toString().replaceAll("", "\u{200B}"),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: const TextStyle(
+                        fontSize: 12, color: QtToolThemeColors.tableTextColor),
+                    )));
           }
           break;
         case 'cmdOptions':
@@ -60,33 +62,38 @@ class QtCommandDataSource extends sf.DataGridSource {
         case 'cmdPySideOptions':
           {
             c = Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
-                child: Text(
-                  dataGridCell.value.toString().replaceAll("", "\u{200B}"),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  softWrap: false,
-                  style: const TextStyle(
-                      fontSize: 12, color: QtToolThemeColors.tableTextColor),
-                ));
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+                  child: Tooltip(
+                    message: dataGridCell.value.toString(),
+                    child: Text(
+                      dataGridCell.value.toString().replaceAll("", "\u{200B}"),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: const TextStyle(
+                        fontSize: 12, color: QtToolThemeColors.tableTextColor),
+                  )));
           }
           break;
+        case 'output_path':
         case 'input_path':
           {
             c = Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-                // to make ellipsis happen since flutter devs don't care
-                // https://github.com/flutter/flutter/issues/18761
-                child: Text(
-                  dataGridCell.value.toString().replaceAll("", "\u{200B}"),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  softWrap: false,
-                  style: const TextStyle(
-                      fontSize: 12, color: QtToolThemeColors.tableTextColor),
-                ));
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+                  // to make ellipsis happen since flutter devs don't care
+                  // https://github.com/flutter/flutter/issues/18761
+                  child: Tooltip(
+                    message: dataGridCell.value.toString(),
+                    child: Text(
+                      dataGridCell.value.toString().replaceAll("", "\u{200B}"),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: const TextStyle(
+                        fontSize: 12, color: QtToolThemeColors.tableTextColor),
+                  )));
           }
           break;
         default:
@@ -177,13 +184,14 @@ class _HomePageState extends State<HomePage> {
     return lupdateCommands;
   }
 
+  // https://stackoverflow.com/questions/67063174/how-to-use-initstate-when-using-future-function-and-future-builder-in-flutter
   var uicCommandsForFuture;
   var rccCommandsForFuture;
   var lupdateCommandsForFuture;
 
   @override
   void initState() {
-    // Save Future<List> here to prevent loading each time on table resize
+    // Load Future<List> here to prevent loading each time on table resize
     // since table data does not change
     // TODO what happens if item is deleted though?
     uicCommandsForFuture = getUicCommands();
@@ -315,9 +323,8 @@ class _HomePageState extends State<HomePage> {
       Map<String, double> columnWidthsMap, Color primaryColor) {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-                0, 0, 10, 0), // so scroller does not overlap
+        child: Padding( // prevent scroller overlap
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: sf.SfDataGridTheme(
                 data: sf.SfDataGridThemeData(
                   headerColor: primaryColor,
@@ -344,30 +351,18 @@ class _HomePageState extends State<HomePage> {
                   columns: <sf.GridColumn>[
                     giveSfGridColumn('project_name', 'Project', columnWidthsMap,
                         50, 90, sf.ColumnWidthMode.fitByCellValue),
-                    giveSfGridColumn('item_name', 'Name', columnWidthsMap, 80,
-                        180, sf.ColumnWidthMode.fitByCellValue),
-                    giveSfGridColumn('cmdOptions', 'Extra Opt', columnWidthsMap,
-                        50, 120, sf.ColumnWidthMode.fitByColumnName),
-                    giveSfGridColumn(
-                        'cmdPyQtOptions',
-                        'PyQt Opt',
-                        columnWidthsMap,
-                        50,
-                        120,
+                    giveSfGridColumn('item_name', 'Name', columnWidthsMap,
+                        80, 180, sf.ColumnWidthMode.fitByCellValue),
+                    giveSfGridColumn('cmdOptions', 'Options', columnWidthsMap,
+                        50, 200, sf.ColumnWidthMode.fitByColumnName),
+                    giveSfGridColumn('cmdPyQtOptions', 'PyQt Opt',
+                        columnWidthsMap, 50, 200,
                         sf.ColumnWidthMode.fitByColumnName),
-                    giveSfGridColumn(
-                        'cmdPySideOptions',
-                        'PySide Opt',
-                        columnWidthsMap,
-                        50,
-                        120,
+                    giveSfGridColumn('cmdPySideOptions', 'PySide Opt',
+                        columnWidthsMap, 50, 200,
                         sf.ColumnWidthMode.fitByColumnName),
-                    giveSfGridColumn(
-                        'input_path',
-                        'Input Path',
-                        columnWidthsMap,
-                        100,
-                        double.nan,
+                    giveSfGridColumn('input_path', 'Input Path',
+                        columnWidthsMap, 100, double.nan,
                         sf.ColumnWidthMode.lastColumnFill),
                   ],
                 )),
@@ -387,7 +382,7 @@ class _HomePageState extends State<HomePage> {
     return sf.GridColumn(
       columnName: colName,
       width: columnWidthsMap[colName]!,
-      autoFitPadding: const EdgeInsets.all(3),
+      autoFitPadding: const EdgeInsets.all(1),
       columnWidthMode: widthMode,
       minimumWidth: minWidth,
       maximumWidth: maxWidth,
