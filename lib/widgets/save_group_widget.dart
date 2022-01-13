@@ -24,64 +24,72 @@ class SaveGroupWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Mica(
-      child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Button(
-                    child: Text('Create $saveItemName'),
-                    onPressed: createRunFunction),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+    return
+      ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 750),
+        child: Mica(
+          child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 28,
-                      child: SplitButtonBar(
-                          style: SplitButtonThemeData(
-                            primaryButtonStyle: ButtonStyle(
-                                padding: ButtonState.all(const EdgeInsets.fromLTRB(11, 5, 11, 6))),
-                            actionButtonStyle: ButtonStyle(
-                                padding: ButtonState.all(const EdgeInsets.fromLTRB(8, 5, 11, 6))),
-                          ),
-                          buttons: [
-                            SizedBox(
-                              height: 28,
-                              child: Button(
-                                  child: const Text('Save and Run'),
-                                  onPressed: createRunSaveFunction),
-                            ),
-                            SizedBox(
-                              height: 28,
-                              child: DropDownButton(
-                                  controller: dropDownController,
-                                  contentWidth: 150,
-                                  items: [
-                                    DropDownButtonItem(
-                                        title: const Text('Save Only'),
-                                        onTap: createSaveFunction ),
-                                  ]),
-                            ),
-                          ]),
-                    ),
-                    SizedBox(
-                        width: 150,
-                        child: TextBox(
-                          header: 'Project Name',
-                          controller: projectNameController,
-                        )),
-                    SizedBox(
-                        width: 200,
-                        child: TextBox(
-                          header: 'Name',
-                          controller: itemNameController,
-                        )),
+                    Button(
+                        child: Text('Create $saveItemName'),
+                        onPressed: createRunFunction),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 28,
+                          child: SplitButtonBar(
+                              style: SplitButtonThemeData(
+                                primaryButtonStyle: ButtonStyle(
+                                    padding: ButtonState.all(const EdgeInsets.fromLTRB(11, 5, 11, 6))),
+                                actionButtonStyle: ButtonStyle(
+                                    padding: ButtonState.all(const EdgeInsets.fromLTRB(8, 5, 11, 6))),
+                              ),
+                              buttons: [
+                                SizedBox(
+                                  height: 28,
+                                  child: Button(
+                                      child: const Text('Save and Run'),
+                                      onPressed: createRunSaveFunction),
+                                ),
+                                SizedBox(
+                                  height: 28,
+                                  child: DropDownButton(
+                                      controller: dropDownController,
+                                      contentWidth: 150,
+                                      items: [
+                                        DropDownButtonItem(
+                                            title: const Text('Save Only'),
+                                            onTap: createSaveFunction ),
+                                      ]),
+                                ),
+                              ]),
+                        ),
+                        Flexible(
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 16, right: 8),
+                                child: TextBox(
+                                  header: 'Project Name',
+                                  controller: projectNameController,
+                                ),
+                            )),
+                        Flexible(
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 8, right: 0),
+                                child: TextBox(
+                                  header: 'Name',
+                                  controller: itemNameController,
+                                ),
+                            )),
+                      ]),
                   ]),
-              ]),
-      ),
+          ),
+        ),
     );
   }
 }
