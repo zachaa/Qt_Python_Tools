@@ -1,4 +1,7 @@
+import 'dart:io' as io;
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:path/path.dart';
+import 'package:path_provider_windows/path_provider_windows.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'commands_model.dart';
@@ -12,6 +15,14 @@ class QtCommandDatabase {
   ///private constructor
   QtCommandDatabase._init();
 
+  /// Gives the path to a location where the database should be located.
+  /// It should be the same as SharedPreferences.json in C:\Users\NAME\AppData\Roaming
+  Future<String?> _getDatabasePath() async{
+    PathProviderWindows pathProvider = PathProviderWindows();
+    final String? appDataPath = await pathProvider.getApplicationSupportPath();
+    return appDataPath;
+  }
+
   ///get database if it exists or open a new connection if it does not
   Future<Database> get database async{
     if (_database != null) return _database!;
@@ -20,19 +31,22 @@ class QtCommandDatabase {
   }
 
   Future<Database> _initDB(String filePath) async {
-    // final dbPath = await getDatabasesPath();
-    // await getDatabasesPath() does not seem to work on desktop (and maybe web)
-    // https://github.com/tekartik/sqflite/issues/452
-    // TODO get the proper path, I want the same as SharedPreferences path
-    const String FORCE_PATH = r'C:\Users\Zachary\IdeaProjects\qt_python_tools';
-    // final path = join(dbPath, filePath);
-    final path = join(FORCE_PATH, filePath);
+    // This should be the same path as SharedPreferences
+    String? dbPath;
+    if (foundation.kDebugMode){
+      dbPath = io.Directory.current.path; // USER\IdeaProjects\qt_python_tools
+    } else {
+      dbPath = await _getDatabasePath(); // AppData\Roaming\qtPythonTools\qt_pyt
+    }
 
+    dbPath ??= io.Directory.current.path; // If getDatabasePath failed
+    final path = join(dbPath, filePath);
+    print(path);
+    // sqflite does not support desktop so we have to use sqflite_common
     sqfliteFfiInit();
     var databaseFactory = databaseFactoryFfi;
     var dbOptions = OpenDatabaseOptions(version: 1, onCreate: _dbOnCreate);
     return await databaseFactory.openDatabase(path, options: dbOptions);
-    // return await openDatabase(path, version: 1, onCreate: _dbOnCreate);
   }
 
   /// Create the database tables, runs first time only.
