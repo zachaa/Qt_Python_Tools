@@ -20,10 +20,12 @@ void main() async{
   // set user default Qt Implementation
   selectedQtImplementation = App.localStorage.getInt('default_qt_implementation') ?? 0;
 
-  runApp(QtPythonApp());
+  runApp(const QtPythonApp());
 }
 
 class QtPythonApp extends StatefulWidget {
+  const QtPythonApp({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return QtPythonAppState();
