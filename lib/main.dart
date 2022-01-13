@@ -14,7 +14,7 @@ void main() async{
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle("Qt Tools for Python");
     setWindowMinSize(const Size(970, 670));
-    setWindowFrame(const Rect.fromLTWH(50, 100, 1020, 710));
+    setWindowFrame(const Rect.fromLTWH(200, 50, 1020, 710));
   }
 
   // set user default Qt Implementation
