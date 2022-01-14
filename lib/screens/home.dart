@@ -14,20 +14,24 @@ import '/process/command_rcc.dart';
 
 class QtCommandDataSource extends sf.DataGridSource {
   QtCommandDataSource({required List<QtCommand> commands}) {
+    buildDataGridRows(commands);
+  }
+
+  void buildDataGridRows(List<QtCommand> commands) {
     _commands = commands
         .map<sf.DataGridRow>((e) => sf.DataGridRow(cells: [
-              sf.DataGridCell<String>(
-                  columnName: 'project_name', value: e.projectName),
-              sf.DataGridCell<String>(
-                  columnName: 'item_name', value: e.itemName),
-              sf.DataGridCell<String>(
-                  columnName: 'cmdOptions', value: e.cmdOptions),
-              sf.DataGridCell<String>(
-                  columnName: 'cmdPyQtOptions', value: e.cmdPyQtOptions),
-              sf.DataGridCell<String>(
-                  columnName: 'cmdPySideOptions', value: e.cmdPySideOptions),
-              sf.DataGridCell<String>(
-                  columnName: 'input_path', value: e.pathInput),
+            sf.DataGridCell<String>(
+                columnName: 'project_name', value: e.projectName),
+            sf.DataGridCell<String>(
+                columnName: 'item_name', value: e.itemName),
+            sf.DataGridCell<String>(
+                columnName: 'cmdOptions', value: e.cmdOptions),
+            sf.DataGridCell<String>(
+                columnName: 'cmdPyQtOptions', value: e.cmdPyQtOptions),
+            sf.DataGridCell<String>(
+                columnName: 'cmdPySideOptions', value: e.cmdPySideOptions),
+            sf.DataGridCell<String>(
+                columnName: 'input_path', value: e.pathInput),
             ]))
         .toList();
   }
@@ -115,6 +119,12 @@ class QtCommandDataSource extends sf.DataGridSource {
       }
       return c;
     }).toList());
+  }
+
+  /// For updating the data table when a row is deleted.
+  /// https://help.syncfusion.com/flutter/datagrid/data-binding
+  void updateDataGridSource() {
+    notifyListeners();
   }
 }
 
@@ -538,15 +548,49 @@ class _HomePageState extends State<HomePage> {
     print('run existing lupdate command');
   }
 
-  void deleteExistingUic(){
-    print('delete uic');
+  /// Deletes the selected row and recreates the list containing the commands.
+  ///
+  /// There is probably a better way rater than rereading the database
+  /// Since the item is deleted from the database directly, maybe deleting
+  /// the item from the list directly is also good?
+  void deleteExistingUic() async{
+    int index = _uicDataGridController.selectedIndex;
+    if (index == -1) {return;}
+    QtCommand currentCommand = uicCommands[index];
+    int? commandId = currentCommand.id;
+    if (commandId == null) {return;} // id should never be null
+    await QtCommandDatabase.instance.deleteQtCommand(commandId, 'uic');
+    uicCommands = await QtCommandDatabase.instance.readAllCommands(tableUic);
+    _uicCommandsDataSource.buildDataGridRows(uicCommands);
+    _uicCommandsDataSource.updateDataGridSource();
+    // print('deleted uic _id=$commandId at index=$index');
   }
 
-  void deleteExistingRcc(){
-    print('delete rcc');
+  /// Deletes the selected row and recreates the list containing the commands.
+  void deleteExistingRcc() async {
+    int index = _rccDataGridController.selectedIndex;
+    if (index == -1) {return;}
+    QtCommand currentCommand = rccCommands[index];
+    int? commandId = currentCommand.id;
+    if (commandId == null) {return;} // id should never be null
+    await QtCommandDatabase.instance.deleteQtCommand(commandId, 'rcc');
+    rccCommands = await QtCommandDatabase.instance.readAllCommands(tableRcc);
+    _rccCommandsDataSource.buildDataGridRows(rccCommands);
+    _rccCommandsDataSource.updateDataGridSource();
+    // print('deleted rcc _id=$commandId at index=$index');
   }
 
-  void deleteExistingLUpdate(){
-    print('delete lupdate');
+  /// Deletes the selected row and recreates the list containing the commands.
+  void deleteExistingLUpdate() async {
+    int index = _lupdateDataGridController.selectedIndex;
+    if (index == -1) {return;}
+    QtCommand currentCommand = lupdateCommands[index];
+    int? commandId = currentCommand.id;
+    if (commandId == null) {return;} // id should never be null
+    await QtCommandDatabase.instance.deleteQtCommand(commandId, 'lupdate');
+    lupdateCommands = await QtCommandDatabase.instance.readAllCommands(tableLUpdate);
+    _lupdateCommandsDataSource.buildDataGridRows(lupdateCommands);
+    _lupdateCommandsDataSource.updateDataGridSource();
+    // print('deleted lupdate _id=$commandId at index=$index');
   }
 }
