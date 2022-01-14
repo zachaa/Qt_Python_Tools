@@ -1,10 +1,15 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:qt_python_tools/globals.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart' as sf;
 import 'package:syncfusion_flutter_core/theme.dart' as sf;
 
+import '/input_checks.dart';
+import '/run_process.dart';
 import '/theme.dart';
 import '/data/command_db.dart';
 import '/data/commands_model.dart';
+import '/process/command_uic.dart';
+import '/process/command_rcc.dart';
 
 
 class QtCommandDataSource extends sf.DataGridSource {
@@ -121,6 +126,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _uicDataGridController = sf.DataGridController();
+  final _rccDataGridController = sf.DataGridController();
+  final _lupdateDataGridController = sf.DataGridController();
+
   late List<QtCommand> uicCommands = <QtCommand>[];
   late QtCommandDataSource _uicCommandsDataSource;
   late Map<String, double> uicColumnWidths = {
@@ -200,7 +209,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
@@ -235,6 +243,7 @@ class _HomePageState extends State<HomePage> {
                                               child:
                                                   giveSfCommandDataTable(
                                                       _uicCommandsDataSource,
+                                                      _uicDataGridController,
                                                       uicColumnWidths,
                                                       QtToolThemeColors.uicColor),
                                             ),
@@ -267,6 +276,7 @@ class _HomePageState extends State<HomePage> {
                                               child:
                                                   giveSfCommandDataTable(
                                                       _rccCommandsDataSource,
+                                                      _rccDataGridController,
                                                       rccColumnWidths,
                                                       QtToolThemeColors.rccColor),
                                             ),
@@ -299,6 +309,7 @@ class _HomePageState extends State<HomePage> {
                                               child:
                                                   giveSfCommandDataTable(
                                                       _lupdateCommandsDataSource,
+                                                      _lupdateDataGridController,
                                                       lupdateColumnWidths,
                                                       QtToolThemeColors.lupdateColor),
                                             ),
@@ -316,11 +327,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Gives a DataTable displaying the data from the given [dataSource].
+  /// The [dataController] is used to get the selected row.
   /// Adjustable columns with [columnWidthsMap] and the color of the table
   /// is determined by [primaryColor] which is faded for the
   /// selected row and hovered row.
-  SingleChildScrollView giveSfCommandDataTable(sf.DataGridSource dataSource,
-      Map<String, double> columnWidthsMap, Color primaryColor) {
+  SingleChildScrollView giveSfCommandDataTable(
+      sf.DataGridSource dataSource,
+      sf.DataGridController dataController,
+      Map<String, double> columnWidthsMap,
+      Color primaryColor) {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding( // prevent scroller overlap
@@ -335,6 +350,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: sf.SfDataGrid(
                   source: dataSource,
+                  controller: dataController,
                   selectionMode: sf.SelectionMode.single,
                   navigationMode: sf.GridNavigationMode.row,
                   rowHeight: 20,
@@ -422,10 +438,11 @@ class _HomePageState extends State<HomePage> {
   /// The main widget for each table of commands.
   ///
   /// Returns a FutureBuilder with with [futureFunction] giving [commandsList]
-  /// that is used in [dataSource]. Table widths are user adjustable with
-  /// [columnWidths]. Two buttons are below the table (if data exists) that
-  /// connect to [runFunction] and [deleteFunction].
-  /// [name] and [color] tells user what table it is.
+  /// that is used in [dataSource]. Selected row is determined from
+  /// [dataController]. Table widths are user adjustable with [columnWidths].
+  /// Two buttons are below the table (if data exists) that connect to
+  /// [runFunction] and [deleteFunction]. [name] and [color] tells user
+  /// what table it is.
   ///
   /// While data is loading a spinner is displayed.
   /// If no data is found a message is show in place of the table.
@@ -434,6 +451,7 @@ class _HomePageState extends State<HomePage> {
       String name,
       List<QtCommand> commandsList,
       QtCommandDataSource dataSource,
+      sf.DataGridController dataController,
       Map<String, double> columnWidths,
       VoidCallback runFunction,
       VoidCallback deleteFunction,
@@ -458,6 +476,7 @@ class _HomePageState extends State<HomePage> {
                               child:
                                   giveSfCommandDataTable(
                                       dataSource,
+                                      dataController,
                                       columnWidths,
                                       color),
                             ),
@@ -470,12 +489,49 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  void runExistingUic() {
-    print('run existing uic command');
+  /// Checks to see if the command to be run is valid
+  /// (in case input has been deleted or Qt Python path is invalid).
+  ///
+  /// [qtTool] should be 'uic' 'rcc' 'lupdate' or 'lrelease'
+  bool _runCommandCheck(String inputPath, int qtImplementation, String qtTool) {
+    if (!checkInputFilePathExist(inputPath, context)) {return false;}
+    if (!checkQtImplementationDirectory(qtImplementation, context)) {return false;}
+    if (!checkIfValidTool(qtImplementation, qtTool, context)) {return false;}
+    return true;
   }
 
+  /// Run the selected command for UIC
+  void runExistingUic() {
+    int index = _uicDataGridController.selectedIndex;
+    if (index == -1) {return;}
+    QtCommand currentCommand = uicCommands[index];
+    if (!_runCommandCheck(
+        currentCommand.pathInput,
+        selectedQtImplementation,
+        'uic')) {
+      return;}
+    CommandUIC command = CommandUIC.fromQtCommand(currentCommand);
+    runCommandProcess(command, 'uic',
+        selectedQtImplementation,
+        'Running UIC',
+        QtToolThemeColors.uicColor, context);
+  }
+
+  /// Run the selected command for RCC
   void runExistingRcc() {
-    print('run existing rcc command');
+    int index = _rccDataGridController.selectedIndex;
+    if (index == -1) {return;}
+    QtCommand currentCommand = rccCommands[index];
+    if (!_runCommandCheck(
+        currentCommand.pathInput,
+        selectedQtImplementation,
+        'rcc')) {
+      return;}
+    CommandRCC command = CommandRCC.fromQtCommand(currentCommand);
+    runCommandProcess(command, 'rcc',
+        selectedQtImplementation,
+        'Running RCC',
+        QtToolThemeColors.rccColor, context);
   }
 
   void runExistingLUpdate() {
