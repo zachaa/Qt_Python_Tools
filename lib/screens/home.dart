@@ -584,6 +584,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void runExistingLUpdate() {
+    int index = _rccDataGridController.selectedIndex;
+    if (index == -1) {return;}
     print('run existing lupdate command');
   }
 
