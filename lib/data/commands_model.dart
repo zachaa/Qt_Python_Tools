@@ -81,9 +81,9 @@ class QtCommand {
         itemName: map[QtCmdFields.itemName] as String,
         pathInput: map[QtCmdFields.pathInput] as String,
         pathOutput: map[QtCmdFields.pathOutput] as String,
-        cmdOptions: map[QtCmdFields.cmdOptions] as String,
-        cmdPyQtOptions: map[QtCmdFields.cmdPyQtOptions] as String,
-        cmdPySideOptions: map[QtCmdFields.cmdPySideOptions] as String);
+        cmdOptions: map[QtCmdFields.cmdOptions] ?? '', // Even though they are supposed to be NOT NULL, they may be null
+        cmdPyQtOptions: map[QtCmdFields.cmdPyQtOptions] ?? '',
+        cmdPySideOptions: map[QtCmdFields.cmdPySideOptions] ?? '');
 
   @override
   String toString() {
