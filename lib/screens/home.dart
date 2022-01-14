@@ -20,6 +20,7 @@ class QtCommandDataSource extends sf.DataGridSource {
   void buildDataGridRows(List<QtCommand> commands) {
     _commands = commands
         .map<sf.DataGridRow>((e) => sf.DataGridRow(cells: [
+            sf.DataGridCell<int>(columnName: 'id', value: e.id),
             sf.DataGridCell<String>(
                 columnName: 'project_name', value: e.projectName),
             sf.DataGridCell<String>(
@@ -30,6 +31,8 @@ class QtCommandDataSource extends sf.DataGridSource {
                 columnName: 'cmdPyQtOptions', value: e.cmdPyQtOptions),
             sf.DataGridCell<String>(
                 columnName: 'cmdPySideOptions', value: e.cmdPySideOptions),
+            sf.DataGridCell<String>(
+                columnName: 'output_path', value: e.pathOutput),
             sf.DataGridCell<String>(
                 columnName: 'input_path', value: e.pathInput),
             ]))
@@ -144,6 +147,7 @@ class _HomePageState extends State<HomePage> {
   late QtCommandDataSource _uicCommandsDataSource;
   late Map<String, double> uicColumnWidths = {
     // for user column resizing
+    'id': double.nan,   // should never be visible
     'project_name': double.nan,
     'item_name': double.nan,
     'input_path': double.nan,
@@ -157,6 +161,7 @@ class _HomePageState extends State<HomePage> {
   late QtCommandDataSource _rccCommandsDataSource;
   late Map<String, double> rccColumnWidths = {
     // for user column resizing
+    'id': double.nan,   // should never be visible
     'project_name': double.nan,
     'item_name': double.nan,
     'input_path': double.nan,
@@ -170,6 +175,7 @@ class _HomePageState extends State<HomePage> {
   late QtCommandDataSource _lupdateCommandsDataSource;
   late Map<String, double> lupdateColumnWidths = {
     // for user column resizing
+    'id': double.nan,   // should never be visible
     'project_name': double.nan,
     'item_name': double.nan,
     'input_path': double.nan,
@@ -387,6 +393,7 @@ class _HomePageState extends State<HomePage> {
                   selectionColor: primaryColor.withOpacity(0.6),
                   rowHoverTextStyle: const TextStyle(fontSize: 12),
                   gridLineColor: QtToolThemeColors.tableGridLineColor,
+                  sortIconColor: QtToolThemeColors.tableTextColor,
                 ),
                 child: sf.SfDataGrid(
                   source: dataSource,
@@ -397,6 +404,8 @@ class _HomePageState extends State<HomePage> {
                   headerRowHeight: 22,
                   gridLinesVisibility: sf.GridLinesVisibility.vertical,
                   allowColumnsResizing: true,
+                  allowSorting: true,
+                  allowMultiColumnSorting: true,
                   shrinkWrapRows: true,  // get rid of extra space below table
                   onColumnResizeUpdate: (sf.ColumnResizeUpdateDetails details) {
                     setState(() {
@@ -406,21 +415,26 @@ class _HomePageState extends State<HomePage> {
                     return true;
                   },
                   columns: <sf.GridColumn>[
+                    giveSfGridColumn('id', 'Id', columnWidthsMap,  // INVISIBLE
+                        15, 30, sf.ColumnWidthMode.auto, true, visible: false),
                     giveSfGridColumn('project_name', 'Project', columnWidthsMap,
-                        50, 90, sf.ColumnWidthMode.fitByCellValue),
+                        50, 90, sf.ColumnWidthMode.fitByCellValue, true),
                     giveSfGridColumn('item_name', 'Name', columnWidthsMap,
-                        80, 180, sf.ColumnWidthMode.fitByCellValue),
+                        80, 180, sf.ColumnWidthMode.fitByCellValue, true),
                     giveSfGridColumn('cmdOptions', 'Options', columnWidthsMap,
-                        50, 200, sf.ColumnWidthMode.fitByColumnName),
+                        50, 200, sf.ColumnWidthMode.fitByColumnName, false),
                     giveSfGridColumn('cmdPyQtOptions', 'PyQt Opt',
                         columnWidthsMap, 50, 200,
-                        sf.ColumnWidthMode.fitByColumnName),
+                        sf.ColumnWidthMode.fitByColumnName, false),
                     giveSfGridColumn('cmdPySideOptions', 'PySide Opt',
                         columnWidthsMap, 50, 200,
-                        sf.ColumnWidthMode.fitByColumnName),
+                        sf.ColumnWidthMode.fitByColumnName, false),
+                    giveSfGridColumn('output_path', 'Output Path',
+                        columnWidthsMap, 100, double.nan,
+                        sf.ColumnWidthMode.fitByColumnName, true, visible: true),
                     giveSfGridColumn('input_path', 'Input Path',
                         columnWidthsMap, 100, double.nan,
-                        sf.ColumnWidthMode.lastColumnFill),
+                        sf.ColumnWidthMode.lastColumnFill, true),
                   ],
                 )),
         ));
@@ -435,14 +449,16 @@ class _HomePageState extends State<HomePage> {
   /// - [widthMode] = sf.ColumnWidthMode
   sf.GridColumn giveSfGridColumn(String colName, String colTitle,
       Map<String, double> columnWidthsMap, double minWidth, double maxWidth,
-      sf.ColumnWidthMode widthMode) {
+      sf.ColumnWidthMode widthMode, bool allowSort, {bool visible = true}) {
     return sf.GridColumn(
       columnName: colName,
       width: columnWidthsMap[colName]!,
       autoFitPadding: const EdgeInsets.all(1),
+      allowSorting: allowSort,
       columnWidthMode: widthMode,
       minimumWidth: minWidth,
       maximumWidth: maxWidth,
+      visible: visible,
       label: Container(
         padding: const EdgeInsets.all(2.0),
         alignment: Alignment.center,
@@ -591,7 +607,7 @@ class _HomePageState extends State<HomePage> {
 
   /// Deletes the selected row and recreates the list containing the commands.
   ///
-  /// There is probably a better way rater than rereading the database
+  /// There is probably a better way rather than rereading the database
   /// Since the item is deleted from the database directly, maybe deleting
   /// the item from the list directly is also good?
   void deleteExistingUic() async{
