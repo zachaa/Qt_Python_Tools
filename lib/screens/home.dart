@@ -566,10 +566,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Run the selected command for UIC
-  void runExistingUic() {
-    int index = _uicDataGridController.selectedIndex;
-    if (index == -1) {return;}
-    QtCommand currentCommand = uicCommands[index];
+  void runExistingUic() async {
+    sf.DataGridRow? selectedRow = _uicDataGridController.selectedRow;
+    if (selectedRow == null) {return;}
+    // Have to get around sorting index vs index in uicCommands list.
+    int dbId = selectedRow.getCells()[0].value;   // get _id from invisible cell
+    // Get command directly from database
+    QtCommand currentCommand = await QtCommandDatabase.instance.readCommand(dbId, 'uic');
+
+    // This only works without sorting.
+    // int index = _uicDataGridController.selectedIndex;
+    // if (index == -1) {return;}
+    // QtCommand currentCommand = uicCommands[index];
     if (!_runCommandCheck(
         currentCommand.pathInput,
         selectedQtImplementation,
@@ -583,10 +591,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Run the selected command for RCC
-  void runExistingRcc() {
-    int index = _rccDataGridController.selectedIndex;
-    if (index == -1) {return;}
-    QtCommand currentCommand = rccCommands[index];
+  void runExistingRcc() async {
+    sf.DataGridRow? selectedRow = _rccDataGridController.selectedRow;
+    if (selectedRow == null) {return;}
+    // Have to get around sorting index vs index in rccCommands list.
+    int dbId = selectedRow.getCells()[0].value;   // get _id from invisible cell
+    // Get command directly from database
+    QtCommand currentCommand = await QtCommandDatabase.instance.readCommand(dbId, 'rcc');
+
     if (!_runCommandCheck(
         currentCommand.pathInput,
         selectedQtImplementation,
@@ -600,8 +612,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void runExistingLUpdate() {
-    int index = _rccDataGridController.selectedIndex;
-    if (index == -1) {return;}
     print('run existing lupdate command');
   }
 
@@ -610,44 +620,62 @@ class _HomePageState extends State<HomePage> {
   /// There is probably a better way rather than rereading the database
   /// Since the item is deleted from the database directly, maybe deleting
   /// the item from the list directly is also good?
+  /// Due to sorting, we need to directly get the id and delete from the DB.
   void deleteExistingUic() async{
+    sf.DataGridRow? selectedRow = _uicDataGridController.selectedRow;
+    if (selectedRow == null) {return;}
     int index = _uicDataGridController.selectedIndex;
-    if (index == -1) {return;}
-    QtCommand currentCommand = uicCommands[index];
-    int? commandId = currentCommand.id;
-    if (commandId == null) {return;} // id should never be null
-    await QtCommandDatabase.instance.deleteQtCommand(commandId, 'uic');
+
+    // Have to get around sorting index not necessarily being actual index
+    int dbId = selectedRow.getCells()[0].value;   // get _id from invisible cell
+    String itemName = selectedRow.getCells()[2].value.toString();
+    await QtCommandDatabase.instance.deleteQtCommand(dbId, 'uic');
     uicCommands = await QtCommandDatabase.instance.readAllCommands(tableUic);
     _uicCommandsDataSource.buildDataGridRows(uicCommands);
     _uicCommandsDataSource.updateDataGridSource();
-    // print('deleted uic _id=$commandId at index=$index');
+    print('deleted uic _id=$dbId name=$itemName at index=$index');
+
+    // int index = _uicDataGridController.selectedIndex;
+    // if (index == -1) {return;}
+    // QtCommand currentCommand = uicCommands[index];
+    // int? commandId = currentCommand.id;
+    // if (commandId == null) {return;} // id should never be null
+    // await QtCommandDatabase.instance.deleteQtCommand(commandId, 'uic');
+    // uicCommands = await QtCommandDatabase.instance.readAllCommands(tableUic);
+    // _uicCommandsDataSource.buildDataGridRows(uicCommands);
+    // _uicCommandsDataSource.updateDataGridSource();
+    // print('deleted uic _id=$commandId name=${currentCommand.itemName} at index=$index');
   }
 
   /// Deletes the selected row and recreates the list containing the commands.
   void deleteExistingRcc() async {
+    sf.DataGridRow? selectedRow = _rccDataGridController.selectedRow;
+    if (selectedRow == null) {return;}
     int index = _rccDataGridController.selectedIndex;
-    if (index == -1) {return;}
-    QtCommand currentCommand = rccCommands[index];
-    int? commandId = currentCommand.id;
-    if (commandId == null) {return;} // id should never be null
-    await QtCommandDatabase.instance.deleteQtCommand(commandId, 'rcc');
+
+    // Have to get around sorting index not necessarily being actual index
+    int dbId = selectedRow.getCells()[0].value;   // get _id from invisible cell
+    String itemName = selectedRow.getCells()[2].value.toString();
+    await QtCommandDatabase.instance.deleteQtCommand(dbId, 'rcc');
     rccCommands = await QtCommandDatabase.instance.readAllCommands(tableRcc);
     _rccCommandsDataSource.buildDataGridRows(rccCommands);
     _rccCommandsDataSource.updateDataGridSource();
-    // print('deleted rcc _id=$commandId at index=$index');
+    print('deleted rcc _id=$dbId name=$itemName at index=$index');
   }
 
   /// Deletes the selected row and recreates the list containing the commands.
   void deleteExistingLUpdate() async {
+    sf.DataGridRow? selectedRow = _lupdateDataGridController.selectedRow;
+    if (selectedRow == null) {return;}
     int index = _lupdateDataGridController.selectedIndex;
-    if (index == -1) {return;}
-    QtCommand currentCommand = lupdateCommands[index];
-    int? commandId = currentCommand.id;
-    if (commandId == null) {return;} // id should never be null
-    await QtCommandDatabase.instance.deleteQtCommand(commandId, 'lupdate');
+
+    // Have to get around sorting index not necessarily being actual index
+    int dbId = selectedRow.getCells()[0].value;   // get _id from invisible cell
+    String itemName = selectedRow.getCells()[2].value.toString();
+    await QtCommandDatabase.instance.deleteQtCommand(dbId, 'lupdate');
     lupdateCommands = await QtCommandDatabase.instance.readAllCommands(tableLUpdate);
     _lupdateCommandsDataSource.buildDataGridRows(lupdateCommands);
     _lupdateCommandsDataSource.updateDataGridSource();
-    // print('deleted lupdate _id=$commandId at index=$index');
+    print('deleted lupdate _id=$dbId name=$itemName at index=$index');
   }
 }
