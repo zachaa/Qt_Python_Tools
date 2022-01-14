@@ -383,8 +383,8 @@ class _HomePageState extends State<HomePage> {
             child: sf.SfDataGridTheme(
                 data: sf.SfDataGridThemeData(
                   headerColor: primaryColor,
-                  rowHoverColor: primaryColor.withOpacity(0.4),
-                  selectionColor: primaryColor.withOpacity(0.8),
+                  rowHoverColor: primaryColor.withOpacity(0.2),
+                  selectionColor: primaryColor.withOpacity(0.6),
                   rowHoverTextStyle: const TextStyle(fontSize: 12),
                   gridLineColor: QtToolThemeColors.tableGridLineColor,
                 ),
