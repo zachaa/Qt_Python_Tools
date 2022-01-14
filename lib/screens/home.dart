@@ -183,21 +183,18 @@ class _HomePageState extends State<HomePage> {
   /// Future Lists (unique for each table) for FutureBuilder
   /// --------------------------------------------------
   Future<List<QtCommand>> getUicCommands() async{
-    await Future.delayed(const Duration(seconds: 1)); // TODO remove test
     uicCommands =  await QtCommandDatabase.instance.readAllCommands(tableUic);
     _uicCommandsDataSource = QtCommandDataSource(commands: uicCommands);
     return uicCommands;
   }
 
   Future<List<QtCommand>> getRccCommands() async{
-    await Future.delayed(const Duration(seconds: 1));
     rccCommands =  await QtCommandDatabase.instance.readAllCommands(tableRcc);
     _rccCommandsDataSource = QtCommandDataSource(commands: rccCommands);
     return rccCommands;
   }
 
   Future<List<QtCommand>> getLUpdateCommands() async{
-    await Future.delayed(const Duration(seconds: 1));
     List<QtCommand> lupdateCommands =  await QtCommandDatabase.instance.readAllCommands(tableLUpdate);
     _lupdateCommandsDataSource = QtCommandDataSource(commands: lupdateCommands);
     return lupdateCommands;
@@ -270,7 +267,8 @@ class _HomePageState extends State<HomePage> {
                                             const SizedBox(height: 10),
                                             giveTableButtonsRow('Uic',
                                                 runExistingUic,
-                                                deleteExistingUic),
+                                                deleteExistingUic,
+                                                QtToolThemeColors.uicColor),
                                           ])
                                       : const Text('No Data, Should not see');
                               }),
@@ -313,7 +311,8 @@ class _HomePageState extends State<HomePage> {
                                             const SizedBox(height: 10),
                                             giveTableButtonsRow('Rcc',
                                                 runExistingRcc,
-                                                deleteExistingRcc),
+                                                deleteExistingRcc,
+                                                QtToolThemeColors.rccColor),
                                           ])
                                       : const Text('No Data, Should not see');
                               }),
@@ -356,7 +355,8 @@ class _HomePageState extends State<HomePage> {
                                             const SizedBox(height: 10),
                                             giveTableButtonsRow('Lupdate',
                                                 runExistingLUpdate,
-                                                deleteExistingLUpdate),
+                                                deleteExistingLUpdate,
+                                                QtToolThemeColors.lupdateColor),
                                           ])
                                       : const Text('No Data, Should not see');
                               }),
@@ -459,16 +459,23 @@ class _HomePageState extends State<HomePage> {
   ///
   /// Each button displays text with [name] in it. The left button
   /// uses [runFunction] and the right button uses [deleteFunction].
+  /// The run button is accented with [color].
   Row giveTableButtonsRow(
       String name,
       VoidCallback runFunction,
-      VoidCallback deleteFunction) {
+      VoidCallback deleteFunction,
+      Color color) {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-            Button(
-                child: Text('Run $name Command'),
-                onPressed: runFunction),
+            Mica(
+              backgroundColor: color.withOpacity(0.8),
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
+              child: Padding(padding: const EdgeInsets.all(1),
+                  child:Button(
+                      child: Text('Run $name Command'),
+                      onPressed: runFunction),
+              )),
             const SizedBox(width: 10),
             Button(
                 child: Text('Delete $name Command'),
@@ -524,7 +531,8 @@ class _HomePageState extends State<HomePage> {
                             const SizedBox(height: 10),
                             giveTableButtonsRow(name,
                                 runFunction,
-                                deleteFunction),
+                                deleteFunction,
+                                color),
                           ])
                   : const Text('No Data, Should not see');
         });
