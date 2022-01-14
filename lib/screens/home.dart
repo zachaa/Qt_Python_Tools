@@ -232,6 +232,16 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // giveFutureBuilderTable(
+                          //     uicCommandsFinal,
+                          //     'Uic',
+                          //     uicCommands,
+                          //     _uicCommandsDataSource,
+                          //     _uicDataGridController,
+                          //     uicColumnWidths,
+                          //     runExistingUic,
+                          //     deleteExistingUic,
+                          //     QtToolThemeColors.uicColor),
                           FutureBuilder( // Database may not have loaded yet
                               future: uicCommandsForFuture,
                               builder: (context, data) {
@@ -249,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             ConstrainedBox(
                                               constraints: const BoxConstraints(
-                                                  minHeight: 80, maxHeight: 140),
+                                                  minHeight: 60, maxHeight: 140),
                                               child:
                                                   giveSfCommandDataTable(
                                                       _uicCommandsDataSource,
@@ -264,7 +274,17 @@ class _HomePageState extends State<HomePage> {
                                           ])
                                       : const Text('No Data, Should not see');
                               }),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
+                          // giveFutureBuilderTable(
+                          //     getRccCommands(),
+                          //     'Rcc',
+                          //     rccCommands,
+                          //     _rccCommandsDataSource,
+                          //     _rccDataGridController,
+                          //     rccColumnWidths,
+                          //     runExistingRcc,
+                          //     deleteExistingRcc,
+                          //     QtToolThemeColors.rccColor),
                           FutureBuilder( // Database may not have loaded yet
                               future: rccCommandsForFuture,
                               builder: (context, data) {
@@ -282,7 +302,7 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             ConstrainedBox(
                                               constraints: const BoxConstraints(
-                                                  minHeight: 80, maxHeight: 140),
+                                                  minHeight: 60, maxHeight: 140),
                                               child:
                                                   giveSfCommandDataTable(
                                                       _rccCommandsDataSource,
@@ -297,7 +317,17 @@ class _HomePageState extends State<HomePage> {
                                           ])
                                       : const Text('No Data, Should not see');
                               }),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
+                          // giveFutureBuilderTable(
+                          //     getLUpdateCommands(),
+                          //     'LUpdate',
+                          //     lupdateCommands,
+                          //     _lupdateCommandsDataSource,
+                          //     _lupdateDataGridController,
+                          //     lupdateColumnWidths,
+                          //     runExistingLUpdate,
+                          //     deleteExistingLUpdate,
+                          //     QtToolThemeColors.lupdateColor),
                           FutureBuilder( // Database may not have loaded yet
                               future: lupdateCommandsForFuture,
                               builder: (context, data) {
@@ -315,7 +345,7 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             ConstrainedBox(
                                               constraints: const BoxConstraints(
-                                                  minHeight: 80, maxHeight: 140),
+                                                  minHeight: 40, maxHeight: 140),
                                               child:
                                                   giveSfCommandDataTable(
                                                       _lupdateCommandsDataSource,
@@ -367,6 +397,7 @@ class _HomePageState extends State<HomePage> {
                   headerRowHeight: 22,
                   gridLinesVisibility: sf.GridLinesVisibility.vertical,
                   allowColumnsResizing: true,
+                  shrinkWrapRows: true,  // get rid of extra space below table
                   onColumnResizeUpdate: (sf.ColumnResizeUpdateDetails details) {
                     setState(() {
                       columnWidthsMap[details.column.columnName] =
@@ -482,7 +513,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             ConstrainedBox(
                               constraints: const BoxConstraints(
-                                  minHeight: 80, maxHeight: 140),
+                                  minHeight: 60, maxHeight: 140),
                               child:
                                   giveSfCommandDataTable(
                                       dataSource,
