@@ -19,9 +19,9 @@ void runCommandProcess(
     String runningTitle,
     Color runningColor,
     BuildContext context,
-    {int minArgCount = 2}) async{
+    {int minArgCount = 2}) async {
   // This *should* never happen because check should prevent it.
-  assert (commandMap.keys.contains(commandType));
+  assert(commandMap.keys.contains(commandType));
 
   List<String> argsList = command.getArgumentsList(qtImplementation);
   String? executable = getExecutableFullPath(qtImplementation, commandType);
@@ -31,10 +31,11 @@ void runCommandProcess(
   if (argsList.length < minArgCount) {
     showDialog(
         context: context,
-        builder: (_) => messageDialog(context,
-            'Arguments error',
-            'Not enough arguments given (need at least $minArgCount).\n'
-                '${argsList.toString()}'));
+        builder: (_) =>
+            messageDialog(context,
+                'Arguments error',
+                'Not enough arguments given (need at least $minArgCount).\n'
+                    '${argsList.toString()}'));
     return;
   }
 
@@ -55,8 +56,7 @@ void runCommandProcess(
   else { // There was an error, show the error message to user
     showDialog(
         context: context,
-        builder: (_) => messageDialog(context,
-            'Run Error',
-            result.stderr as String));
+        builder: (_) =>
+            messageDialog(context, 'Run Error', result.stderr as String));
   }
 }
