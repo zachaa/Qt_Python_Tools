@@ -1,4 +1,5 @@
 import 'dart:io' as io;
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:fluent_ui/fluent_ui.dart';
 
 import '/globals.dart';
@@ -19,6 +20,7 @@ void runCommandProcess(
     Color runningColor,
     BuildContext context,
     {int minArgCount = 2}) async{
+  // This *should* never happen because check should prevent it.
   assert (commandMap.keys.contains(commandType));
 
   List<String> argsList = command.getArgumentsList(qtImplementation);
@@ -41,7 +43,10 @@ void runCommandProcess(
       context: context,
       builder: (_) => processingDialog(context, runningTitle, runningColor),
   );
-  await Future.delayed(const Duration(seconds: 1));
+
+  // Debug Only: To test that processingDialog will appear
+  if (foundation.kDebugMode) {await Future.delayed(const Duration(seconds: 1));}
+
   io.ProcessResult result = await runQtProcess(executable, argsList);
   Navigator.pop(context); // close the dialog
 
