@@ -14,6 +14,8 @@ class QtToolThemeColors {
   static const Color tableTextColor = Color(0xFFDDDDDD);
   static const Color tableGridLineColor = Color(0xFF666666);
 
+  static const Color deleteColor = Color(0xFFCE0000);
+
   /// Accent Color based off of the shade of green from qt.io (qtGreenBase)
   static final flui.AccentColor qtGreenAccent = flui.AccentColor('normal', const <String, Color>{
     'darkest': Color(0xff287f32),  //print(qtGreenBase.lerpWith(black, 0.38));
