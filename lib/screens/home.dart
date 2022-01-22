@@ -488,14 +488,19 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: color.withOpacity(0.8),
               borderRadius: const BorderRadius.all(Radius.circular(4)),
               child: Padding(padding: const EdgeInsets.all(1),
-                  child:Button(
+                  child: Button(
                       child: Text('Run $name Command'),
                       onPressed: runFunction),
               )),
             const SizedBox(width: 10),
-            Button(
-                child: Text('Delete $name Command'),
-                onPressed: deleteFunction)
+            Mica(
+              backgroundColor: QtToolThemeColors.deleteColor.withOpacity(0.8),
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
+              child: Padding(padding: const EdgeInsets.all(1),
+                  child: Button(
+                      child: Text('Delete $name Command'),
+                      onPressed: deleteFunction),
+              )),
     ]);
   }
 
