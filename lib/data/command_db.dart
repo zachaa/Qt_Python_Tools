@@ -160,6 +160,25 @@ CREATE TABLE $tableLRelease(
     );
   }
 
+  /// Deletes and recreates a table (needs to reset the primary key)
+  Future<void> clearTable(String table) async {
+    final db = await instance.database;
+    const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
+    const textType = 'TEXT NOT NULL';
+
+    db.execute("DROP TABLE IF EXISTS $table");
+    db.execute("""
+CREATE TABLE $table(
+ ${QtCmdFields.id} $idType, 
+ ${QtCmdFields.projectName} $textType,
+ ${QtCmdFields.itemName} $textType,
+ ${QtCmdFields.pathInput} $textType,
+ ${QtCmdFields.pathOutput} $textType,
+ ${QtCmdFields.cmdOptions} $textType,
+ ${QtCmdFields.cmdPyQtOptions} $textType,
+ ${QtCmdFields.cmdPySideOptions} $textType)""");
+  }
+
   /// Closes the database
   Future close() async {
     final db = await instance.database;
