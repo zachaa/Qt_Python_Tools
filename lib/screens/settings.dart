@@ -1,4 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import '/data/command_db.dart';
+import '/data/commands_model.dart';
 import '/globals.dart';
 import '/theme.dart';
 
@@ -41,15 +43,21 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    const double spaceBetween = 12;
+
     return ScaffoldPage(
         header: const PageHeader(
             title: Text('Settings')
         ),
         content: Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
-            child:Wrap( // use wrap instead of Column to use spacing
-                spacing: 14,     // the horizontal spacing
-                runSpacing: 14,  // the vertical spacing
+          padding: const EdgeInsets.fromLTRB(14, 0, 6, 0),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 12, 0), // prevent scroller overlap
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Mica( // Outline box
                     backgroundColor: QtToolThemeColors.qtGreenBase,
@@ -77,38 +85,76 @@ class _SettingsPageState extends State<SettingsPage> {
                             )
                       ))),
                   )),
+                  const SizedBox(height: spaceBetween),
                   TextBox(
                     header: 'PyQt5 Path',
                     controller: _pathPyqt5Controller,
                     placeholder: 'C:/...',
                   ),
+                  const SizedBox(height: spaceBetween),
                   TextBox(
                     header: 'PyQt6 Path',
                     controller: _pathPyqt6Controller,
                     placeholder: 'C:/...',
                   ),
+                  const SizedBox(height: spaceBetween),
                   TextBox(
                     header: 'PySide2 Path',
                     controller: _pathPyside2Controller,
                     placeholder: 'C:/...',
                   ),
+                  const SizedBox(height: spaceBetween),
                   TextBox(
                     header: 'PySide6 Path',
                     controller: _pathPyside6Controller,
                     placeholder: 'C:/...',
                   ),
+                  const SizedBox(height: spaceBetween),
                   Mica(
-                      backgroundColor: QtToolThemeColors.qtGreenBase.withOpacity(0.5),
+                      backgroundColor: QtToolThemeColors.qtGreenBase.withOpacity(0.7),
                       borderRadius: const BorderRadius.all(Radius.circular(4)),
-                      child: Padding(padding: const EdgeInsets.all(1),
+                      child: Padding(padding: const EdgeInsets.all(2),
                           child:Button(
                             child: const Text('Save Settings'),
                             onPressed: _saveSettings,)),
-                  )
+                  ),
+                  const SizedBox(height: spaceBetween),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: Mica( // Outline box
+                      backgroundColor: QtToolThemeColors.deleteColor,
+                      child: Padding(padding: const EdgeInsets.all(1),
+                        child: Mica(
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child:InfoLabel(
+                              label: 'Clear Table Data',
+                              child: Padding(
+                                padding:const EdgeInsets.fromLTRB(10, 4, 8, 4),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Button(
+                                      child: const Text('Clear Uic'),
+                                      onPressed: () => clickClearTable(tableUic, context)),
+                                    Button(
+                                        child: const Text('Clear Rcc'),
+                                        onPressed: () => clickClearTable(tableRcc, context)),
+                                    Button(
+                                        child: const Text('Clear LUpdate'),
+                                        onPressed: () => clickClearTable(tableLUpdate, context)),
+                                    Button(
+                                        child: const Text('Clear LRelease'),
+                                        onPressed: () => clickClearTable(tableLRelease, context)),
+                                  ]),
+                            )),
+                          )))),
+                  ),
                 ]
-            )
-        )
-    );
+              )
+            ),
+    )));
   }
 
   _readSettings() {
@@ -127,4 +173,27 @@ class _SettingsPageState extends State<SettingsPage> {
     App.localStorage.setInt('default_qt_implementation', _currentRadioButtonIndex);
   }
 
+  clickClearTable(String table, BuildContext buildContext){
+    // return;
+    showDialog(
+        context: buildContext,
+        builder: (_) => ContentDialog(
+          title: const Text('Clear Table Values?'),
+          content: const Text(
+            'All entries in the table will be removed. Do you want to clear the table?',
+            ),
+          actions: [
+            Button(
+              child: const Text('Clear'),
+              onPressed: () {
+                QtCommandDatabase.instance.clearTable(table);
+                Navigator.pop(buildContext);
+                },
+            ),
+            Button(
+              child: const Text('Cancel'),
+              onPressed: () => Navigator.pop(buildContext),
+            )],
+    ));
+  }
 }
