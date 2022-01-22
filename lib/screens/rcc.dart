@@ -169,7 +169,6 @@ class _RccPageState extends State<RccPage> {
     );
   }
 
-  // TODO close button does not show icon or change size
   InfoBar pyQt6InfoBar(){
     return InfoBar(
       severity: InfoBarSeverity.warning,
@@ -187,12 +186,6 @@ class _RccPageState extends State<RccPage> {
             const TextSpan(text: '  '), // prevent link from escaping link text
           ]),
       ),
-      style: InfoBarThemeData(
-          closeIconSize: 36,
-          closeIcon: FluentIcons.devices2,
-          closeButtonStyle: ButtonStyle(
-              padding: ButtonState.all(const EdgeInsets.fromLTRB(2, 2, 2, 2)),
-              foregroundColor: ButtonState.all(Colors.blue))),
     );
   }
 
