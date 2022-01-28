@@ -28,3 +28,20 @@ You can also set your preferred version on the same page.
 
 Use the Navigation Pane to select your tool, add the information and click run.
 You can also supply a name and save the command to run again at another time from the 'Home' page.
+
+## Installation
+### Windows
+Program is developed and fully tested on Windows.
+
+For a release sqlite3.dll should be included in the application folder. [Link](https://pub.dev/packages/sqflite_common_ffi)
+
+### Linux
+**The program launches but is untested.**
+
+libsqlite3.so needs to be installed.
+
+In my default Ubuntu installation, it was not available (but .so.0 & .so.0.8.6 were).
+It was expected to be found in: ```/usr/lib/x86_64-linux-gnu/```
+
+To install run the command:
+```sudo apt-get -y install libsqlite3-0 libsqlite3-dev```
