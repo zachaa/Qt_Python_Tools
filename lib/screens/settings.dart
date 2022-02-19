@@ -174,7 +174,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   clickClearTable(String table, BuildContext buildContext){
-    // return;
     showDialog(
         context: buildContext,
         builder: (_) => ContentDialog(

@@ -119,7 +119,7 @@ packages:
       name: fluent_ui
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.7.0"
+    version: "3.9.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -162,7 +162,7 @@ packages:
       name: http_multi_server
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.2.0"
   http_parser:
     dependency: transitive
     description:
@@ -218,7 +218,7 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2"
+    version: "0.1.3"
   meta:
     dependency: transitive
     description:
@@ -344,35 +344,35 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.12"
+    version: "2.0.13"
   shared_preferences_android:
     dependency: transitive
     description:
       name: shared_preferences_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.10"
+    version: "2.0.11"
   shared_preferences_ios:
     dependency: transitive
     description:
       name: shared_preferences_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.9"
+    version: "2.1.0"
   shared_preferences_linux:
     dependency: transitive
     description:
       name: shared_preferences_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.1.0"
   shared_preferences_macos:
     dependency: transitive
     description:
       name: shared_preferences_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.3"
   shared_preferences_platform_interface:
     dependency: transitive
     description:
@@ -393,7 +393,7 @@ packages:
       name: shared_preferences_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.1.0"
   shelf:
     dependency: transitive
     description:
@@ -496,14 +496,14 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.4.43+1"
+    version: "19.4.52"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_datagrid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.4.43"
+    version: "19.4.52"
   synchronized:
     dependency: transitive
     description:
@@ -552,35 +552,35 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.18"
+    version: "6.0.20"
   url_launcher_android:
     dependency: transitive
     description:
       name: url_launcher_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.14"
+    version: "6.0.15"
   url_launcher_ios:
     dependency: transitive
     description:
       name: url_launcher_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.14"
+    version: "6.0.15"
   url_launcher_linux:
     dependency: transitive
     description:
       name: url_launcher_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.0"
   url_launcher_macos:
     dependency: transitive
     description:
       name: url_launcher_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.0"
   url_launcher_platform_interface:
     dependency: transitive
     description:
@@ -601,7 +601,7 @@ packages:
       name: url_launcher_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "3.0.0"
   vector_math:
     dependency: transitive
     description:
@@ -643,13 +643,13 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.8"
+    version: "2.4.1"
   window_size:
     dependency: "direct main"
     description:
       path: "plugins/window_size"
       ref: HEAD
-      resolved-ref: a550668ca25881d154ae54204baa93a41fe5e344
+      resolved-ref: "89c350f787e1d7bff12b3517e5671146211ee70e"
       url: "git://github.com/google/flutter-desktop-embedding.git"
     source: git
     version: "0.1.0"
@@ -659,7 +659,7 @@ packages:
       name: xdg_directories
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.0+1"
   yaml:
     dependency: transitive
     description:
