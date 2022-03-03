@@ -16,7 +16,6 @@ class _LUpdatePageState extends State<LUpdatePage> {
   final _outputPathController = TextEditingController();
   final _projectNameController = TextEditingController();
   final _itemNameController = TextEditingController();
-  final _flyoutSaveController = FlyoutController();
   // lupdate option fields
   bool _noObsolete = false;
   final _trFunctionName = TextEditingController();
@@ -28,7 +27,6 @@ class _LUpdatePageState extends State<LUpdatePage> {
     _outputPathController.dispose();
     _projectNameController.dispose();
     _itemNameController.dispose();
-    _flyoutSaveController.dispose();
 
     _trFunctionName.dispose();
     _translateFunctionName.dispose();
@@ -140,8 +138,8 @@ class _LUpdatePageState extends State<LUpdatePage> {
                                           Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const InfoLabel(label: 'PySide Options'),]
+                                          children: const [
+                                            InfoLabel(label: 'PySide Options'),]
                                     ))),
                                 ))
                               ]
@@ -152,7 +150,6 @@ class _LUpdatePageState extends State<LUpdatePage> {
                         saveItemName: 'LUpdate',
                         projectNameController: _projectNameController,
                         itemNameController: _itemNameController,
-                        dropDownController: _flyoutSaveController,
                         createRunFunction: runCommandLUpdate,
                         createRunSaveFunction: saveRunCommandLUpdate,
                         createSaveFunction: saveCommandLUpdate,),

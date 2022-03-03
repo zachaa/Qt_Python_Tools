@@ -5,7 +5,6 @@ class SaveGroupWidget extends StatelessWidget {
   final String saveItemName;
   final TextEditingController projectNameController;
   final TextEditingController itemNameController;
-  final FlyoutController dropDownController;
   final VoidCallback createRunFunction;
   final VoidCallback createRunSaveFunction;
   final VoidCallback createSaveFunction;
@@ -15,7 +14,6 @@ class SaveGroupWidget extends StatelessWidget {
       required this.saveItemName,
       required this.projectNameController,
       required this.itemNameController,
-      required this.dropDownController,
       required this.createRunFunction,
       required this.createRunSaveFunction,
       required this.createSaveFunction
@@ -60,8 +58,6 @@ class SaveGroupWidget extends StatelessWidget {
                                 SizedBox(
                                   height: 28,
                                   child: DropDownButton(
-                                      controller: dropDownController,
-                                      contentWidth: 150,
                                       items: [
                                         DropDownButtonItem(
                                             title: const Text('Save Only'),

@@ -28,7 +28,6 @@ class _RccPageState extends State<RccPage> {
   final _outputPathController = TextEditingController();
   final _projectNameController = TextEditingController();
   final _itemNameController = TextEditingController();
-  final _flyoutSaveController = FlyoutController();
   // rcc option fields
   final _thresholdController = TextEditingController(text: '70');
   final _compressionController = TextEditingController(text: '-1');
@@ -48,7 +47,6 @@ class _RccPageState extends State<RccPage> {
     _outputPathController.dispose();
     _projectNameController.dispose();
     _itemNameController.dispose();
-    _flyoutSaveController.dispose();
 
     _thresholdController.dispose();
     _compressionController.dispose();
@@ -158,7 +156,6 @@ class _RccPageState extends State<RccPage> {
                         saveItemName: 'RCC',
                         projectNameController: _projectNameController,
                         itemNameController: _itemNameController,
-                        dropDownController: _flyoutSaveController,
                         createRunFunction: runCommandRcc,
                         createRunSaveFunction: saveRunCommandRcc,
                         createSaveFunction: saveCommandRcc,),

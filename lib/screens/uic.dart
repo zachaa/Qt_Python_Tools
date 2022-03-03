@@ -23,7 +23,6 @@ class _UicPageState extends State<UicPage> {
   final _outputPathController = TextEditingController();
   final _projectNameController = TextEditingController();
   final _itemNameController = TextEditingController();
-  final _flyoutSaveController = FlyoutController();
   // uic option fields
   final _resourceExtensionController = TextEditingController(text: '_rc');
   bool _optionUicXpyqt = false;
@@ -34,7 +33,6 @@ class _UicPageState extends State<UicPage> {
     _outputPathController.dispose();
     _projectNameController.dispose();
     _itemNameController.dispose();
-    _flyoutSaveController.dispose();
 
     _resourceExtensionController.dispose();
     super.dispose();
@@ -96,7 +94,6 @@ class _UicPageState extends State<UicPage> {
                       saveItemName: 'UI',
                       projectNameController: _projectNameController,
                       itemNameController: _itemNameController,
-                      dropDownController: _flyoutSaveController,
                       createRunFunction: runCommandUic,
                       createRunSaveFunction: saveRunCommandUic,
                       createSaveFunction: saveCommandUic,)
