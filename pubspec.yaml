@@ -31,15 +31,15 @@ dependencies:
     sdk: flutter
   window_size:
     git:
-      url: git://github.com/google/flutter-desktop-embedding.git
+      url: https://github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
 
-  fluent_ui: ^3.9.0
+  fluent_ui: ^3.12.0
   provider: ^6.0.2
-  syncfusion_flutter_datagrid: ^19.4.52
-  shared_preferences: ^2.0.13
-  sqflite_common_ffi: ^2.1.0
-  url_launcher: ^6.0.20
+  syncfusion_flutter_datagrid: ^20.1.55
+  shared_preferences: ^2.0.15
+  sqflite_common_ffi: ^2.1.1
+  url_launcher: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +51,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
