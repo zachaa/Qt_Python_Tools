@@ -22,6 +22,7 @@ class RccPage extends StatefulWidget {
 }
 
 class _RccPageState extends State<RccPage> {
+  final Uri _urlPyqtRccIssue = Uri.parse('https://www.riverbankcomputing.com/pipermail/pyqt/2020-September/043210.html');
   late bool _visiblePyQt6Warning;
   // default fields
   final _inputPathController = TextEditingController();
@@ -179,7 +180,8 @@ class _RccPageState extends State<RccPage> {
             TextSpan(text: '"does not see the point of resource files in a Python context."',
                 style: TextStyle(color: Colors.blue),
                 recognizer: TapGestureRecognizer()
-                  ..onTap=() {launch('https://www.riverbankcomputing.com/pipermail/pyqt/2020-September/043210.html');}),
+                  ..onTap=() {launchUrl(_urlPyqtRccIssue);}
+            ),
             const TextSpan(text: '  '), // prevent link from escaping link text
           ]),
       ),
