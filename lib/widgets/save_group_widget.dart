@@ -49,6 +49,7 @@ class SaveGroupWidget extends StatelessWidget {
                                     padding: ButtonState.all(const EdgeInsets.fromLTRB(8, 5, 11, 6))),
                               ),
                               buttons: [
+                                // Need sized box so DropDownButton is correct height to match Text button
                                 SizedBox(
                                   height: 28,
                                   child: Button(
@@ -57,18 +58,25 @@ class SaveGroupWidget extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   height: 28,
-                                  child: DropDownButton(
-                                      items: [
-                                        // TODO this goes below the window
-                                        MenuFlyoutItem(
-                                            text: const Text('Save Only'),
-                                            onPressed: createSaveFunction),
-                                        // DropDownButtonItem(
-                                        //     title: const Text('Save Only'),
-                                        //     onTap: createSaveFunction ),
-                                      ]),
-                                ),
-                              ]),
+                                  // TODO just use a button without dropdown until fix
+                                  child: Button(
+                                    onPressed: createSaveFunction,
+                                    child: const Text("Save Only")),
+                                  // child: DropDownButton(
+                                  //     items: [
+                                  //       // TODO this goes below the window,
+                                  //       // TODO DropDown in Web Example works correctly 7-2022
+                                  //       MenuFlyoutItem(
+                                  //           text: const Text('Save Only'),
+                                  //           onPressed: createSaveFunction),
+                                  //       // DropDownButtonItem(
+                                  //       //     title: const Text('Save Only'),
+                                  //       //     onTap: createSaveFunction ),
+                                  //     ],
+                                  // ),
+                                )
+                              ]
+                          ),
                         ),
                         Flexible(
                             child: Padding(
