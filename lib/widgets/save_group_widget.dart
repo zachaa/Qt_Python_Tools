@@ -33,8 +33,8 @@ class SaveGroupWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Button(
-                        child: Text('Create $saveItemName'),
-                        onPressed: createRunFunction),
+                        onPressed: createRunFunction,
+                        child: Text('Create $saveItemName')),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,16 +52,20 @@ class SaveGroupWidget extends StatelessWidget {
                                 SizedBox(
                                   height: 28,
                                   child: Button(
-                                      child: const Text('Save and Run'),
-                                      onPressed: createRunSaveFunction),
+                                      onPressed: createRunSaveFunction,
+                                      child: const Text('Save and Run')),
                                 ),
                                 SizedBox(
                                   height: 28,
                                   child: DropDownButton(
                                       items: [
-                                        DropDownButtonItem(
-                                            title: const Text('Save Only'),
-                                            onTap: createSaveFunction ),
+                                        // TODO this goes below the window
+                                        MenuFlyoutItem(
+                                            text: const Text('Save Only'),
+                                            onPressed: createSaveFunction),
+                                        // DropDownButtonItem(
+                                        //     title: const Text('Save Only'),
+                                        //     onTap: createSaveFunction ),
                                       ]),
                                 ),
                               ]),
