@@ -84,7 +84,7 @@ bool checkIfValidTool(int qtVersion, String toolName, BuildContext context) {
   }
 
   String pathToScripts = App.localStorage.getString(settingsPathNames[qtVersion]) ?? '';
-  if (!io.File(join(pathToScripts, qtPyTool + '.exe')).existsSync()) {
+  if (!io.File(join(pathToScripts, '$qtPyTool.exe')).existsSync()) {
     showDialog(
         context: context,
         builder: (_) => messageDialog(context,
