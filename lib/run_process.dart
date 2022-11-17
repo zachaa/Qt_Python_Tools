@@ -43,6 +43,7 @@ void runCommandProcess(
   showDialog(
       context: context,
       builder: (_) => processingDialog(context, runningTitle, runningColor),
+      barrierDismissible: false, // We can't have this being dismissed
   );
 
   // Debug Only: To test that processingDialog will appear

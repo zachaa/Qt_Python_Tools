@@ -71,7 +71,7 @@ class QtPythonAppState extends State<QtPythonApp> {
             ),
             automaticallyImplyLeading: false,
             actions: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   PillButtonBar(
@@ -99,24 +99,29 @@ class QtPythonAppState extends State<QtPythonApp> {
               PaneItem(
                 icon: const Icon(FluentIcons.home,
                     color: QtToolThemeColors.qtGreenBase),
+                body: const HomePage(),
                 title: const Text("Home")),
               PaneItemSeparator(),
               PaneItemHeader(header: const Text("Tools")),
               PaneItem(
                 icon: const Icon(FluentIcons.translate,
                     color: QtToolThemeColors.lreleaseColor),
+                body: const LReleasePage(),
                 title: const Text("LRelease")),
               PaneItem(
                 icon: const Icon(FluentIcons.locale_language,
                     color: QtToolThemeColors.lupdateColor),
+                body: const LUpdatePage(),
                 title: const Text("LUpdate")),
               PaneItem(
                 icon: const Icon(FluentIcons.folder_open,
                     color: QtToolThemeColors.rccColor),
+                body: const RccPage(),
                 title: const Text("Rcc")),
               PaneItem(
                 icon: const Icon(FluentIcons.devices2,
                     color: QtToolThemeColors.uicColor),
+                body: const UicPage(),
                 title: const Text("Uic")),
               ],
             footerItems: [
@@ -124,22 +129,12 @@ class QtPythonAppState extends State<QtPythonApp> {
               PaneItem(
                 icon: const Icon(FluentIcons.settings,
                     color: QtToolThemeColors.qtGreenBase),
+                body: const SettingsPage(),
                 title: const Text('Settings')),
               PaneItemHeader(
                   header: Text('Version 0.1.0',
                     style: TextStyle(fontSize: 10, color: Colors.grey[80]))),
             ]
-          ),
-          content: NavigationBody(
-            index: navIndex,
-            children: const [
-              HomePage(),
-              LReleasePage(),
-              LUpdatePage(),
-              RccPage(),
-              UicPage(),
-              SettingsPage(),
-            ],
           ),
         )
     );

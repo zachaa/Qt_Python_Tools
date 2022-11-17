@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:qt_python_tools/globals.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart' as sf;
-import 'package:syncfusion_flutter_core/theme.dart' as sf;
+import 'package:syncfusion_flutter_core/theme.dart' as sf_t;
 
 import '/input_checks.dart';
 import '/run_process.dart';
@@ -386,8 +386,8 @@ class _HomePageState extends State<HomePage> {
         scrollDirection: Axis.vertical,
         child: Padding( // prevent scroller overlap
             padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-            child: sf.SfDataGridTheme(
-                data: sf.SfDataGridThemeData(
+            child: sf_t.SfDataGridTheme(
+                data: sf_t.SfDataGridThemeData(
                   headerColor: primaryColor,
                   rowHoverColor: primaryColor.withOpacity(0.2),
                   selectionColor: primaryColor.withOpacity(0.6),
@@ -489,8 +489,8 @@ class _HomePageState extends State<HomePage> {
               borderRadius: const BorderRadius.all(Radius.circular(4)),
               child: Padding(padding: const EdgeInsets.all(1),
                   child: Button(
-                      child: Text('Run $name Command'),
-                      onPressed: runFunction),
+                      onPressed: runFunction,
+                      child: Text('Run $name Command')),
               )),
             const SizedBox(width: 10),
             Mica(
@@ -498,8 +498,8 @@ class _HomePageState extends State<HomePage> {
               borderRadius: const BorderRadius.all(Radius.circular(4)),
               child: Padding(padding: const EdgeInsets.all(1),
                   child: Button(
-                      child: Text('Delete $name Command'),
-                      onPressed: deleteFunction),
+                      onPressed: deleteFunction,
+                      child: Text('Delete $name Command')),
               )),
     ]);
   }
@@ -629,58 +629,47 @@ class _HomePageState extends State<HomePage> {
   void deleteExistingUic() async{
     sf.DataGridRow? selectedRow = _uicDataGridController.selectedRow;
     if (selectedRow == null) {return;}
-    int index = _uicDataGridController.selectedIndex;
 
     // Have to get around sorting index not necessarily being actual index
     int dbId = selectedRow.getCells()[0].value;   // get _id from invisible cell
-    String itemName = selectedRow.getCells()[2].value.toString();
     await QtCommandDatabase.instance.deleteQtCommand(dbId, 'uic');
     uicCommands = await QtCommandDatabase.instance.readAllCommands(tableUic);
     _uicCommandsDataSource.buildDataGridRows(uicCommands);
     _uicCommandsDataSource.updateDataGridSource();
-    print('deleted uic _id=$dbId name=$itemName at index=$index');
-
-    // int index = _uicDataGridController.selectedIndex;
-    // if (index == -1) {return;}
-    // QtCommand currentCommand = uicCommands[index];
-    // int? commandId = currentCommand.id;
-    // if (commandId == null) {return;} // id should never be null
-    // await QtCommandDatabase.instance.deleteQtCommand(commandId, 'uic');
-    // uicCommands = await QtCommandDatabase.instance.readAllCommands(tableUic);
-    // _uicCommandsDataSource.buildDataGridRows(uicCommands);
-    // _uicCommandsDataSource.updateDataGridSource();
-    // print('deleted uic _id=$commandId name=${currentCommand.itemName} at index=$index');
+    //int index = _uicDataGridController.selectedIndex;
+    //String itemName = selectedRow.getCells()[2].value.toString();
+    //print('deleted uic _id=$dbId name=$itemName at index=$index');
   }
 
   /// Deletes the selected row and recreates the list containing the commands.
   void deleteExistingRcc() async {
     sf.DataGridRow? selectedRow = _rccDataGridController.selectedRow;
     if (selectedRow == null) {return;}
-    int index = _rccDataGridController.selectedIndex;
 
     // Have to get around sorting index not necessarily being actual index
     int dbId = selectedRow.getCells()[0].value;   // get _id from invisible cell
-    String itemName = selectedRow.getCells()[2].value.toString();
     await QtCommandDatabase.instance.deleteQtCommand(dbId, 'rcc');
     rccCommands = await QtCommandDatabase.instance.readAllCommands(tableRcc);
     _rccCommandsDataSource.buildDataGridRows(rccCommands);
     _rccCommandsDataSource.updateDataGridSource();
-    print('deleted rcc _id=$dbId name=$itemName at index=$index');
+    //int index = _rccDataGridController.selectedIndex;
+    //String itemName = selectedRow.getCells()[2].value.toString();
+    //print('deleted rcc _id=$dbId name=$itemName at index=$index');
   }
 
   /// Deletes the selected row and recreates the list containing the commands.
   void deleteExistingLUpdate() async {
     sf.DataGridRow? selectedRow = _lupdateDataGridController.selectedRow;
     if (selectedRow == null) {return;}
-    int index = _lupdateDataGridController.selectedIndex;
 
     // Have to get around sorting index not necessarily being actual index
     int dbId = selectedRow.getCells()[0].value;   // get _id from invisible cell
-    String itemName = selectedRow.getCells()[2].value.toString();
     await QtCommandDatabase.instance.deleteQtCommand(dbId, 'lupdate');
     lupdateCommands = await QtCommandDatabase.instance.readAllCommands(tableLUpdate);
     _lupdateCommandsDataSource.buildDataGridRows(lupdateCommands);
     _lupdateCommandsDataSource.updateDataGridSource();
-    print('deleted lupdate _id=$dbId name=$itemName at index=$index');
+    //int index = _lupdateDataGridController.selectedIndex;
+    //String itemName = selectedRow.getCells()[2].value.toString();
+    //print('deleted lupdate _id=$dbId name=$itemName at index=$index');
   }
 }

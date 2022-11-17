@@ -95,7 +95,7 @@ class _LUpdatePageState extends State<LUpdatePage> {
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                                const InfoLabel(label: 'PyQt Options'),
+                                                InfoLabel(label: 'PyQt Options'),
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,7 +138,7 @@ class _LUpdatePageState extends State<LUpdatePage> {
                                           Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: const [
+                                          children: [
                                             InfoLabel(label: 'PySide Options'),]
                                     ))),
                                 ))

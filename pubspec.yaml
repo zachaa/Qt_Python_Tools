@@ -34,12 +34,12 @@ dependencies:
       url: https://github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
 
-  fluent_ui: ^3.12.0
-  provider: ^6.0.3
-  syncfusion_flutter_datagrid: ^20.2.36
+  fluent_ui: ^4.0.3
+  provider: ^6.0.4
+  syncfusion_flutter_datagrid: ^20.3.57
   shared_preferences: ^2.0.15
-  sqflite_common_ffi: ^2.1.1+1
-  url_launcher: ^6.1.4
+  sqflite_common_ffi: ^2.2.0+1
+  url_launcher: ^6.1.6
 
 dev_dependencies:
   flutter_test:
