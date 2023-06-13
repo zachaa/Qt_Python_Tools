@@ -74,15 +74,19 @@ class _RccPageState extends State<RccPage> {
                   runSpacing: 20,  // the vertical spacing
                   children: [
                     if (_visiblePyQt6Warning) pyQt6InfoBar(),
-                    TextBox(
-                      header: '.qrc file input path',
-                      placeholder: 'C:/...',
-                      controller: _inputPathController,
+                    InfoLabel(
+                        label: '.qrc file input path',
+                        child: TextBox(
+                          placeholder: 'C:/...',
+                          controller: _inputPathController,
+                      )
                     ),
-                    TextBox(
-                      header: '.py file output path',
-                      placeholder: 'C:/...',
-                      controller: _outputPathController,
+                    InfoLabel(
+                      label: '.py file output path',
+                      child: TextBox(
+                        placeholder: 'C:/...',
+                        controller: _outputPathController,
+                      )
                     ),
                     ConstrainedBox(
                       constraints: const BoxConstraints(minWidth: 530, maxWidth: 650),
@@ -120,14 +124,16 @@ class _RccPageState extends State<RccPage> {
                                                 'threshold level, it is compressed; otherwise, the uncompressed data is stored '
                                                 'instead. The default threshold level is 70%, meaning that compressed files '
                                                 'which are 30% or less of their original size are stored as compressed data.',
-                                            child:TextBox(
-                                              header: 'Threshold Value',
-                                              controller: _thresholdController,
-                                              enabled: _useCompressionOptions && !optionNoCompress,
-                                              keyboardType: TextInputType.number,
-                                              inputFormatters: [
-                                                FilteringTextInputFormatter.digitsOnly,
-                                                NumericalRangeFormatter(min: 0, max: 100, decimalsToShow: 0)],
+                                            child: InfoLabel(
+                                              label: 'Threshold Value',
+                                              child: TextBox(
+                                                controller: _thresholdController,
+                                                enabled: _useCompressionOptions && !optionNoCompress,
+                                                keyboardType: TextInputType.number,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter.digitsOnly,
+                                                  NumericalRangeFormatter(min: 0, max: 100, decimalsToShow: 0)],
+                                              )
                                             )
                                         )
                                     ),
@@ -137,14 +143,16 @@ class _RccPageState extends State<RccPage> {
                                               'The level is an integer in the range 1 to 9. Level 1 does the least compression but is '
                                               'fastest. Level 9 does the most compression but is slowest. To turn off compression, use '
                                               'the "No Compression" Check Box. The default value for level is -1.',
-                                          child: TextBox(
-                                            header: 'Compression Value',
-                                            controller: _compressionController,
-                                            enabled: _useCompressionOptions && !optionNoCompress,
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.digitsOnly,
-                                              NumericalRangeFormatter(min: -1, max: 9, decimalsToShow: 0)],
+                                          child: InfoLabel(
+                                              label: 'Compression Value',
+                                              child: TextBox(
+                                                controller: _compressionController,
+                                                enabled: _useCompressionOptions && !optionNoCompress,
+                                                keyboardType: TextInputType.number,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter.digitsOnly,
+                                                  NumericalRangeFormatter(min: -1, max: 9, decimalsToShow: 0)],
+                                              )
                                           )
                                         )
                                     ),

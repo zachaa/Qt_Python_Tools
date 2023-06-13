@@ -52,15 +52,18 @@ class _UicPageState extends State<UicPage> {
                 spacing: 20,     // the horizontal spacing
                 runSpacing: 20,  // the vertical spacing
                 children: [
-                  TextBox(
-                    header: '.ui file input path',
-                    placeholder: 'C:/...',
-                    controller: _inputPathController,
+                  InfoLabel(
+                    label: '.ui file input path',
+                    child: TextBox(
+                      placeholder: 'C:/...',
+                      controller: _inputPathController,
+                    )
                   ),
-                  TextBox(
-                    header: '.py file output path',
-                    placeholder: 'C:/...',
-                    controller: _outputPathController,
+                  InfoLabel(label: '.py file output path',
+                      child: TextBox(
+                      placeholder: 'C:/...',
+                      controller: _outputPathController,
+                    )
                   ),
                   Mica(
                     child: Padding(padding: const EdgeInsets.all(8),
@@ -81,9 +84,13 @@ class _UicPageState extends State<UicPage> {
                                       message: '(PyQt5 Only) Rcc Support was removed in PyQt6 because reasons.',
                                       child:SizedBox(
                                         width: 200,
-                                        child: TextBox(
-                                          header: 'Resources Extension Suffix',
-                                          controller: _resourceExtensionController,))),
+                                        child: InfoLabel(
+                                          label: 'Resources Extension Suffix',
+                                          child: TextBox(
+                                            controller: _resourceExtensionController)
+                                        )
+                                      )
+                                  ),
                               ],
                             )
                         )

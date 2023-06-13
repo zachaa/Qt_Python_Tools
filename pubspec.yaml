@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0-80.1.beta <3.0.0"
+  sdk: "^3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,12 +34,12 @@ dependencies:
       url: https://github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
 
-  fluent_ui: ^4.0.3
-  provider: ^6.0.4
-  syncfusion_flutter_datagrid: ^20.3.57
-  shared_preferences: ^2.0.15
-  sqflite_common_ffi: ^2.2.0+1
-  url_launcher: ^6.1.6
+  fluent_ui: ^4.6.2
+  provider: ^6.0.5
+  syncfusion_flutter_datagrid: ^21.2.10
+  shared_preferences: ^2.1.2
+  sqflite_common_ffi: ^2.2.5
+  url_launcher: ^6.1.11
 
 dev_dependencies:
   flutter_test:

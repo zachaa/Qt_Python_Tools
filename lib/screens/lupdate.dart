@@ -53,15 +53,19 @@ class _LUpdatePageState extends State<LUpdatePage> {
                   spacing: 20,     // the horizontal spacing
                   runSpacing: 20,  // the vertical spacing
                   children: [
-                    TextBox(
-                      header: '.pro/.qrc/.py file input path',
-                      placeholder: 'C:/...',
-                      controller: _inputPathController,
+                    InfoLabel(
+                      label: '.pro/.qrc/.py file input path',
+                      child: TextBox(
+                        placeholder: 'C:/...',
+                        controller: _inputPathController,
+                      )
                     ),
-                    TextBox(
-                      header: '.ts file output path',
-                      placeholder: 'C:/...',
-                      controller: _outputPathController,
+                    InfoLabel(
+                      label: '.ts file output path',
+                      child: TextBox(
+                        placeholder: 'C:/...',
+                        controller: _outputPathController,
+                      )
                     ),
                     SizedBox(
                       width: 520,
@@ -103,17 +107,23 @@ class _LUpdatePageState extends State<LUpdatePage> {
                                                     SizedBox(width: 160,
                                                       child: Tooltip(
                                                           message: 'name() may be used instead of tr()',
-                                                          child: TextBox(
-                                                            header: 'tr Function Name',
-                                                            controller: _trFunctionName,
-                                                          ))),
+                                                          child: InfoLabel(
+                                                            label: 'tr Function Name',
+                                                            child: TextBox(
+                                                              controller: _trFunctionName,
+                                                            )
+                                                          )
+                                                      )
+                                                    ),
                                                     SizedBox(width: 160,
                                                       child:Tooltip(
                                                           message: 'name() may be used instead of translate()',
-                                                          child:TextBox(
-                                                            header: 'translate Function Name',
-                                                            controller: _translateFunctionName,
-                                                          ))),
+                                                          child: InfoLabel(
+                                                              label: 'translate Function Name',
+                                                              child: TextBox(
+                                                                controller: _translateFunctionName,
+                                                              ))
+                                                      )),
                                                   ]),
                                             ]),
                                       )),

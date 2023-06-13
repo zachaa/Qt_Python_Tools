@@ -86,28 +86,36 @@ class _SettingsPageState extends State<SettingsPage> {
                       ))),
                   )),
                   const SizedBox(height: spaceBetween),
-                  TextBox(
-                    header: 'PyQt5 Path',
-                    controller: _pathPyqt5Controller,
-                    placeholder: 'C:/...',
+                  InfoLabel(
+                    label: 'PyQt5 Path',
+                    child: TextBox(
+                      controller: _pathPyqt5Controller,
+                      placeholder: 'C:/...',
+                    )
                   ),
                   const SizedBox(height: spaceBetween),
-                  TextBox(
-                    header: 'PyQt6 Path',
-                    controller: _pathPyqt6Controller,
-                    placeholder: 'C:/...',
+                  InfoLabel(
+                      label: 'PyQt6 Path',
+                      child: TextBox(
+                        controller: _pathPyqt6Controller,
+                        placeholder: 'C:/...',
+                      )
                   ),
                   const SizedBox(height: spaceBetween),
-                  TextBox(
-                    header: 'PySide2 Path',
-                    controller: _pathPyside2Controller,
-                    placeholder: 'C:/...',
+                  InfoLabel(
+                    label: 'PySide2 Path',
+                    child: TextBox(
+                      controller: _pathPyside2Controller,
+                      placeholder: 'C:/...',
+                    )
                   ),
                   const SizedBox(height: spaceBetween),
-                  TextBox(
-                    header: 'PySide6 Path',
-                    controller: _pathPyside6Controller,
-                    placeholder: 'C:/...',
+                  InfoLabel(
+                    label: 'PySide6 Path',
+                    child: TextBox(
+                      controller: _pathPyside6Controller,
+                      placeholder: 'C:/...',
+                    )
                   ),
                   const SizedBox(height: spaceBetween),
                   Mica(
@@ -115,8 +123,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       borderRadius: const BorderRadius.all(Radius.circular(4)),
                       child: Padding(padding: const EdgeInsets.all(2),
                           child:Button(
-                            child: const Text('Save Settings'),
-                            onPressed: _saveSettings,)),
+                            onPressed: _saveSettings,
+                            child: const Text('Save Settings'),)),
                   ),
                   const SizedBox(height: spaceBetween),
                   ConstrainedBox(

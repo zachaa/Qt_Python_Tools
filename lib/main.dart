@@ -46,7 +46,7 @@ class QtPythonAppState extends State<QtPythonApp> {
   @override
   Widget build(BuildContext context) {
     return FluentApp(
-        theme: ThemeData(
+        theme: FluentThemeData(
             brightness: Brightness.dark,
             accentColor: QtToolThemeColors.qtGreenAccent, // This is not a Color but an AccentColor
             iconTheme: const IconThemeData(size: 26),
@@ -56,10 +56,10 @@ class QtPythonAppState extends State<QtPythonApp> {
         ),
         home: NavigationView(
           appBar: NavigationAppBar(
-            title: Row(
+            title: const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
+                children: [
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                     child: Text("Python Qt Tools",

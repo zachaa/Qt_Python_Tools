@@ -81,18 +81,22 @@ class SaveGroupWidget extends StatelessWidget {
                         Flexible(
                             child: Padding(
                                 padding: const EdgeInsets.only(left: 16, right: 8),
-                                child: TextBox(
-                                  header: 'Project Name',
-                                  controller: projectNameController,
-                                ),
+                                child: InfoLabel(
+                                  label: "Project Name",
+                                  child: TextBox(
+                                    controller: projectNameController,
+                                  ),
+                                )
                             )),
                         Flexible(
                             child: Padding(
                                 padding: const EdgeInsets.only(left: 8, right: 0),
-                                child: TextBox(
-                                  header: 'Name',
-                                  controller: itemNameController,
-                                ),
+                                child: InfoLabel(
+                                  label: "Name",
+                                  child:TextBox(
+                                    controller: itemNameController,
+                                  )
+                                )
                             )),
                       ]),
                   ]),
