@@ -1,15 +1,18 @@
 # Qt Python Tools
 
-A desktop Flutter application for easily creating, running and saving terminal commands when using Qt tools for python.
+A desktop Flutter application for easily creating, running and saving terminal commands when using Qt tools for Python.
+
+![Preview Image](Images/Preview.png)
 
 ### Tools
 
 Supported Qt tools include:
-
 - uic
 - rcc
+
+Future Tools
 - lupdate
-- lrelease (TODO)
+- lrelease
 
 ### Python
 
@@ -23,10 +26,12 @@ Supported Python Qt implementations:
 
 ## Usage
 
-Run the program, go to settings and set the paths to the scripts/ folder where the tools are located and save the settings.
+Run the program, go to settings and set the paths to the `scripts/` folder where the tools are located and save the settings.
+
 You can also set your preferred version on the same page.
 
 Use the Navigation Pane to select your tool, add the information and click run.
+
 You can also supply a name and save the command to run again at another time from the 'Home' page.
 
 ## Installation
@@ -45,3 +50,7 @@ It was expected to be found in: ```/usr/lib/x86_64-linux-gnu/```
 
 To install run the command:
 ```sudo apt-get -y install libsqlite3-0 libsqlite3-dev```
+
+## Libraries
+ - [Fluent UI for Flutter](https://github.com/bdlukaa/fluent_ui)
+ - [SyncFusion](https://pub.dev/packages/syncfusion_flutter_datagrid)
