@@ -53,4 +53,5 @@ To install run the command:
 
 ## Libraries
  - [Fluent UI for Flutter](https://github.com/bdlukaa/fluent_ui)
- - [SyncFusion](https://pub.dev/packages/syncfusion_flutter_datagrid)
+ - [SyncFusion DataGrid](https://pub.dev/packages/syncfusion_flutter_datagrid)
+ - [sqflite_common_ffi](https://pub.dev/packages/sqflite_common_ffi)
