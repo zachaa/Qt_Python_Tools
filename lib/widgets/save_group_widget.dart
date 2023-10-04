@@ -41,41 +41,18 @@ class SaveGroupWidget extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 28,
-                          child: SplitButtonBar(
-                              style: SplitButtonThemeData(
-                                primaryButtonStyle: ButtonStyle(
-                                    padding: ButtonState.all(const EdgeInsets.fromLTRB(11, 5, 11, 6))),
-                                actionButtonStyle: ButtonStyle(
-                                    padding: ButtonState.all(const EdgeInsets.fromLTRB(8, 5, 11, 6))),
+                          child: SplitButton(
+                              flyout: FlyoutContent(
+                                child:Button(
+                                      onPressed: createSaveFunction,
+                                      child: const Text("Save Only")),
                               ),
-                              buttons: [
-                                // Need sized box so DropDownButton is correct height to match Text button
-                                SizedBox(
-                                  height: 28,
-                                  child: Button(
-                                      onPressed: createRunSaveFunction,
-                                      child: const Text('Save and Run')),
-                                ),
-                                SizedBox(
-                                  height: 28,
-                                  // TODO just use a button without dropdown until fix
-                                  child: Button(
-                                    onPressed: createSaveFunction,
-                                    child: const Text("Save Only")),
-                                  // child: DropDownButton(
-                                  //     items: [
-                                  //       // TODO this goes below the window,
-                                  //       // TODO DropDown in Web Example works correctly 7-2022
-                                  //       MenuFlyoutItem(
-                                  //           text: const Text('Save Only'),
-                                  //           onPressed: createSaveFunction),
-                                  //       // DropDownButtonItem(
-                                  //       //     title: const Text('Save Only'),
-                                  //       //     onTap: createSaveFunction ),
-                                  //     ],
-                                  // ),
-                                )
-                              ]
+                              child: SizedBox(
+                                height: 28,
+                                child: Button(
+                                    onPressed: createRunSaveFunction,
+                                    child: const Text('Save and Run')),
+                              )
                           ),
                         ),
                         Flexible(

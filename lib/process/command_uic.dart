@@ -1,4 +1,3 @@
-import 'dart:ui';
 import '/data/commands_model.dart';
 import '/process/command_base.dart';
 
@@ -100,5 +99,6 @@ class CommandUIC extends Command{
           : false;
 
   @override
-  int get hashCode => hashValues(inputpath, outputpath, pyqtXOption, pyqtResourceExtension);
+  int get hashCode => Object.hash(inputpath, outputpath,
+      pyqtXOption, pyqtResourceExtension);
 }

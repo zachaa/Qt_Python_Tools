@@ -2,7 +2,7 @@ import 'dart:io' as io;
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:path/path.dart';
 import 'package:path_provider_windows/path_provider_windows.dart';
-import 'package:sqflite_common/sqlite_api.dart';
+// import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'commands_model.dart';
 

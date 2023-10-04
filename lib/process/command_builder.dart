@@ -9,7 +9,7 @@ String? getExecutableFullPath(int qtImplementation, String toolName){
   String pathToScripts = App.localStorage.getString(settingsPathNames[qtImplementation]) ?? '';
   if (pathToScripts == '') {return null;}
 
-  return join(pathToScripts, qtPyTool + '.exe');
+  return join(pathToScripts, '$qtPyTool.exe');
 }
 
 /// Runs the process asynchronously to allow for progress dialog to show given

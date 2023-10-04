@@ -1,4 +1,3 @@
-import 'dart:ui';
 import '/data/commands_model.dart';
 import '/process/command_base.dart';
 
@@ -124,7 +123,7 @@ class CommandRCC extends Command{
           : false;
 
   @override
-  int get hashCode => hashValues(inputpath, outputpath,
+  int get hashCode => Object.hash(inputpath, outputpath,
       useCompressionOptions, useNoCompression,
       compressionThreshold, compressionValue);
 }
